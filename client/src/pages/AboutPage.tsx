@@ -13,7 +13,9 @@ import {
   Users, 
   ArrowRight,
   PhoneCall,
-  Calendar
+  Calendar,
+  MessageCircle,
+  CheckCircle2
 } from "lucide-react";
 
 interface TeamMember {
@@ -152,36 +154,37 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-white selection:bg-[#E8B923] selection:text-black">
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
       <Header />
 
       <main className="pt-20">
-        {/* Hero Section */}
+        {/* Editorial Hero Header */}
         <section 
-          className="relative min-h-[60vh] flex items-center justify-center bg-center bg-cover overflow-hidden border-b border-white/10"
+          className="relative min-h-[65vh] flex items-center justify-center bg-center bg-cover overflow-hidden border-b border-white/[0.08]"
           style={{ 
-            backgroundImage: "linear-gradient(to bottom, rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1920&q=80')"
+            backgroundImage: "linear-gradient(to bottom, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.96)), url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1920&q=80')"
           }}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+          {/* Ambient Champagne Halo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E5C378]/[0.04] rounded-full blur-[180px] pointer-events-none" />
 
-          <div className="container mx-auto px-4 text-center relative z-10 py-16 max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-semibold uppercase tracking-widest mb-6">
-              <Trophy className="w-3.5 h-3.5" />
+          <div className="container mx-auto px-4 sm:px-6 text-center relative z-10 py-20 max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-[11px] font-mono uppercase tracking-[0.2em] mb-6 shadow-lg shadow-[#E5C378]/5 backdrop-blur-md">
+              <Trophy className="w-3.5 h-3.5 text-[#E5C378]" />
               <span>30+ Years Industry Heritage</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] mb-6 font-montserrat">
-              The Art & Engineering of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8B923] via-amber-200 to-[#E8B923]">Iconic Events</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-cinzel font-bold text-white tracking-tight leading-[1.15] mb-6">
+              The Art & Engineering of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4E8C1] via-[#E5C378] to-[#C5981B]">Iconic Events</span>
             </h1>
 
-            <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed mb-8">
-              Founded in 2017 by Imran Mirza, Pan Eventz brings three decades of live entertainment precision and bespoke luxury curation.
+            <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto font-light leading-relaxed mb-10">
+              Founded in 2017 by Imran Mirza, Pan Eventz synthesizes three decades of live entertainment mastery, concert-scale acoustics, and white-glove bespoke luxury.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/contact">
-                <Button className="bg-gradient-to-r from-[#E6193C] to-[#b8132e] hover:from-[#f02246] hover:to-[#c71734] text-white font-bold px-7 py-5 rounded-xl shadow-lg shadow-primary/30 transition-all flex items-center gap-2 cursor-pointer">
+                <Button className="bg-gradient-to-r from-[#D4AF37] via-[#E5C378] to-[#C5981B] hover:brightness-110 text-black font-cinzel font-bold px-8 py-6 rounded-2xl shadow-xl shadow-[#E5C378]/20 transition-all flex items-center gap-2.5 text-xs sm:text-sm uppercase tracking-widest cursor-pointer">
                   <Calendar className="w-4 h-4" />
                   <span>Plan With Our Team</span>
                 </Button>
@@ -192,17 +195,15 @@ const AboutPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button className="bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold px-6 py-5 rounded-xl shadow-lg shadow-[#25D366]/20 transition-all flex items-center gap-2 cursor-pointer">
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
+                <Button className="bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/20 hover:border-[#E5C378] font-cinzel font-medium px-7 py-6 rounded-2xl transition-all flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest cursor-pointer">
+                  <MessageCircle className="w-4 h-4 text-[#E5C378]" />
                   <span>WhatsApp VIP Desk</span>
                 </Button>
               </a>
 
               <a href="tel:+919821337523">
-                <Button variant="outline" className="border-white/20 hover:border-[#E8B923] text-white hover:text-[#E8B923] bg-white/[0.04] font-medium px-6 py-5 rounded-xl transition-all flex items-center gap-2 cursor-pointer">
-                  <PhoneCall className="w-4 h-4 text-[#E8B923]" />
+                <Button variant="outline" className="border-white/10 hover:border-[#E5C378] text-zinc-300 hover:text-[#E5C378] bg-transparent font-cinzel font-medium px-6 py-6 rounded-2xl transition-all flex items-center gap-2 text-xs sm:text-sm uppercase tracking-wider cursor-pointer">
+                  <PhoneCall className="w-4 h-4 text-[#E5C378]" />
                   <span>+91 98213 37523</span>
                 </Button>
               </a>
@@ -211,85 +212,103 @@ const AboutPage = () => {
         </section>
 
         {/* Mission & Vision Strip */}
-        <section className="py-16 md:py-24 bg-[#060910] border-b border-white/5">
-          <div className="container mx-auto px-4 max-w-5xl">
+        <section className="py-20 md:py-28 bg-[#08080A] border-b border-white/[0.06] relative overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-[#E8B923]/40 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-[#E8B923]/10 border border-[#E8B923]/20 flex items-center justify-center text-[#E8B923] mb-6">
-                  <Award className="w-6 h-6" />
+              
+              {/* Mission Card */}
+              <div className="p-8 sm:p-10 rounded-3xl bg-[#0D0D0E]/90 hover:bg-[#121214] border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 shadow-2xl flex flex-col justify-between group">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-[#E5C378]/10 border border-[#E5C378]/30 flex items-center justify-center text-[#E5C378] mb-6 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#E5C378]/5">
+                    <Award className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-2xl font-cinzel font-bold text-white mb-4 group-hover:text-[#E5C378] transition-colors">
+                    Our Mission
+                  </h3>
+                  <p className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
+                    {content.mission}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 font-montserrat">
-                  Our Mission
-                </h3>
-                <p className="text-sm sm:text-base text-slate-300 font-light leading-relaxed">
-                  {content.mission}
-                </p>
+                <div className="pt-6 mt-6 border-t border-white/[0.06] flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E5C378]/70">
+                  <CheckCircle2 className="w-4 h-4 text-[#E5C378]" />
+                  <span>Architectural Spatial Precision</span>
+                </div>
               </div>
 
-              <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-primary/40 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-6">
-                  <Sparkles className="w-6 h-6" />
+              {/* Vision Card */}
+              <div className="p-8 sm:p-10 rounded-3xl bg-[#0D0D0E]/90 hover:bg-[#121214] border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 shadow-2xl flex flex-col justify-between group">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-[#E5C378]/10 border border-[#E5C378]/30 flex items-center justify-center text-[#E5C378] mb-6 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#E5C378]/5">
+                    <Sparkles className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-2xl font-cinzel font-bold text-white mb-4 group-hover:text-[#E5C378] transition-colors">
+                    Our Vision
+                  </h3>
+                  <p className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
+                    {content.vision}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 font-montserrat">
-                  Our Vision
-                </h3>
-                <p className="text-sm sm:text-base text-slate-300 font-light leading-relaxed">
-                  {content.vision}
-                </p>
+                <div className="pt-6 mt-6 border-t border-white/[0.06] flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E5C378]/70">
+                  <CheckCircle2 className="w-4 h-4 text-[#E5C378]" />
+                  <span>Global Benchmark of Grandeur</span>
+                </div>
               </div>
+
             </div>
           </div>
         </section>
 
         {/* Founder Spotlight */}
-        <section className="py-20 md:py-28 bg-[#090D16] border-b border-white/5 relative overflow-hidden">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <section className="py-24 md:py-32 bg-[#050505] border-b border-white/[0.06] relative overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
               
+              {/* Founder Portrait */}
               <div className="lg:col-span-5">
-                <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+                <div className="relative rounded-3xl overflow-hidden border border-[#E5C378]/30 shadow-2xl group bg-[#0D0D0E]">
                   <img
                     src={content.team[0].image}
-                    alt="Imran Mirza - Founder & CEO"
+                    alt="Imran Mirza - Founder & Managing Director"
                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                   
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="inline-block px-3 py-1 rounded-full bg-[#E8B923] text-black font-bold text-xs uppercase tracking-wider mb-2">
+                    <div className="inline-block px-3.5 py-1 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#E5C378] text-black font-cinzel font-bold text-xs uppercase tracking-wider mb-2.5 shadow-md">
                       Founder & Managing Director
                     </div>
-                    <h3 className="text-2xl font-black text-white font-montserrat">
+                    <h3 className="text-2xl sm:text-3xl font-cinzel font-bold text-white mb-1">
                       Imran Mirza
                     </h3>
-                    <p className="text-xs text-slate-300">
+                    <p className="text-xs font-mono uppercase tracking-widest text-zinc-300">
                       30+ Years Event Industry Vanguard
                     </p>
                   </div>
                 </div>
               </div>
 
+              {/* Founder Narrative */}
               <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-semibold uppercase tracking-widest">
-                  <Compass className="w-3.5 h-3.5" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-[11px] font-mono uppercase tracking-[0.2em] backdrop-blur-md">
+                  <Compass className="w-3.5 h-3.5 text-[#E5C378]" />
                   <span>Leadership Profile</span>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight font-montserrat">
-                  Mastery Forged Over <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8B923] to-amber-200">Three Decades</span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cinzel font-bold text-white leading-tight">
+                  Mastery Forged Over <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4E8C1] via-[#E5C378] to-[#C5981B]">Three Decades</span>
                 </h2>
 
-                <p className="text-base text-slate-300 leading-relaxed font-light">
+                <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
                   {content.team[0].bio}
                 </p>
 
-                <p className="text-base text-slate-300 leading-relaxed font-light">
+                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-light">
                   {content.history}
                 </p>
 
-                <div className="pt-4 flex items-center gap-4">
+                <div className="pt-4 flex flex-wrap items-center gap-4">
                   <Link href="/contact">
-                    <Button className="bg-[#E8B923] hover:bg-amber-300 text-black font-bold px-7 py-5 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                    <Button className="bg-gradient-to-r from-[#D4AF37] via-[#E5C378] to-[#C5981B] hover:brightness-110 text-black font-cinzel font-bold px-8 py-6 rounded-2xl shadow-xl shadow-[#E5C378]/20 transition-all flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest cursor-pointer">
                       <span>Schedule Leadership Consultation</span>
                       <ArrowRight className="w-4 h-4" />
                     </Button>
@@ -301,15 +320,15 @@ const AboutPage = () => {
           </div>
         </section>
 
-        {/* Core Pillars / Values */}
-        <section className="py-20 md:py-28 bg-[#060910]">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8B923]/10 text-[#E8B923] text-xs font-semibold uppercase tracking-wider mb-3">
-                <Award className="w-3.5 h-3.5" />
+        {/* Core Operating Values */}
+        <section className="py-24 md:py-32 bg-[#08080A]">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 text-[#E5C378] border border-[#E5C378]/30 text-[11px] font-mono uppercase tracking-[0.2em] mb-4 shadow-lg shadow-[#E5C378]/5 backdrop-blur-md">
+                <Award className="w-3.5 h-3.5 text-[#E5C378]" />
                 <span>Operating Philosophy</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-montserrat">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cinzel font-bold text-white">
                 Our Non-Negotiable Core Values
               </h2>
             </div>
@@ -320,17 +339,19 @@ const AboutPage = () => {
                 return (
                   <div
                     key={val.id}
-                    className="p-7 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-[#E8B923]/40 transition-all duration-300 group"
+                    className="p-8 rounded-3xl bg-[#0D0D0E]/90 hover:bg-[#121214] border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 shadow-2xl group flex flex-col justify-between"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-[#E8B923]/10 border border-[#E8B923]/20 flex items-center justify-center text-[#E8B923] mb-5 group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6" />
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#E5C378]/10 border border-[#E5C378]/30 flex items-center justify-center text-[#E5C378] mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-cinzel font-bold text-white group-hover:text-[#E5C378] transition-colors mb-3">
+                        {val.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
+                        {val.description}
+                      </p>
                     </div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-[#E8B923] transition-colors mb-2">
-                      {val.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-400 font-light leading-relaxed">
-                      {val.description}
-                    </p>
                   </div>
                 );
               })}
@@ -339,14 +360,14 @@ const AboutPage = () => {
         </section>
 
         {/* 30-Year Milestones Timeline */}
-        <section className="py-20 md:py-28 bg-[#090D16] border-t border-white/5">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-semibold uppercase tracking-widest mb-3">
-                <Calendar className="w-3.5 h-3.5" />
+        <section className="py-24 md:py-32 bg-[#050505] border-t border-white/[0.06] relative overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-[11px] font-mono uppercase tracking-[0.2em] mb-4 backdrop-blur-md">
+                <Calendar className="w-3.5 h-3.5 text-[#E5C378]" />
                 <span>Three Decades of Innovation</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-montserrat">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cinzel font-bold text-white">
                 Our Journey & Legacy
               </h2>
             </div>
@@ -355,15 +376,15 @@ const AboutPage = () => {
               {content.milestones.map((milestone, idx) => (
                 <div 
                   key={idx}
-                  className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-[#E8B923]/40 transition-all duration-300 relative group overflow-hidden"
+                  className="p-8 rounded-3xl bg-[#0D0D0E]/90 hover:bg-[#121214] border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 relative group overflow-hidden shadow-2xl"
                 >
-                  <div className="text-4xl font-black text-[#E8B923]/30 font-montserrat mb-3 group-hover:text-[#E8B923] transition-colors">
+                  <div className="text-4xl sm:text-5xl font-cinzel font-bold text-[#E5C378]/25 mb-4 group-hover:text-[#E5C378] transition-colors">
                     {milestone.year}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2 font-montserrat">
+                  <h3 className="text-xl font-cinzel font-bold text-white mb-3">
                     {milestone.title}
                   </h3>
-                  <p className="text-sm text-slate-400 font-light leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
                     {milestone.description}
                   </p>
                 </div>
@@ -372,24 +393,24 @@ const AboutPage = () => {
           </div>
         </section>
 
-        {/* Leadership & Executive Production Team */}
-        <section className="py-20 md:py-28 bg-[#060910] border-t border-white/5">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-semibold uppercase tracking-widest mb-3">
-                <Users className="w-3.5 h-3.5" />
+        {/* Executive Production Team */}
+        <section className="py-24 md:py-32 bg-[#08080A] border-t border-white/[0.06]">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+            <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-[11px] font-mono uppercase tracking-[0.2em] mb-4 backdrop-blur-md">
+                <Users className="w-3.5 h-3.5 text-[#E5C378]" />
                 <span>Executive Command</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-montserrat">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cinzel font-bold text-white">
                 The Masterminds Behind The Magic
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {content.team.map((member) => (
                 <div 
                   key={member.id}
-                  className="rounded-3xl bg-white/[0.02] border border-white/10 overflow-hidden hover:border-[#E8B923]/40 transition-all duration-500 group flex flex-col"
+                  className="rounded-3xl bg-[#0D0D0E]/90 hover:bg-[#121214] border border-white/[0.08] overflow-hidden hover:border-[#E5C378]/40 transition-all duration-500 group flex flex-col shadow-2xl"
                 >
                   <div className="aspect-[4/5] relative overflow-hidden bg-neutral-900">
                     <img 
@@ -397,14 +418,14 @@ const AboutPage = () => {
                       alt={member.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0E] via-[#0D0D0E]/30 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4">
-                      <h4 className="text-lg font-bold text-white font-montserrat">{member.name}</h4>
-                      <p className="text-xs text-[#E8B923] font-medium">{member.position}</p>
+                      <h4 className="text-lg font-cinzel font-bold text-white group-hover:text-[#E5C378] transition-colors">{member.name}</h4>
+                      <p className="text-xs font-mono uppercase tracking-wider text-[#E5C378]">{member.position}</p>
                     </div>
                   </div>
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <p className="text-xs text-slate-400 font-light leading-relaxed">
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <p className="text-xs text-zinc-400 font-light leading-relaxed">
                       {member.bio}
                     </p>
                   </div>
@@ -415,16 +436,16 @@ const AboutPage = () => {
         </section>
 
         {/* Marquee Enterprise Clients */}
-        <section className="py-16 bg-[#090D16] border-t border-b border-white/5">
-          <div className="container mx-auto px-4 max-w-6xl text-center">
-            <p className="text-xs uppercase tracking-widest text-[#E8B923] font-bold mb-8">
-              Trusted By India's Foremost Corporations, Festivals & Royal Families
+        <section className="py-20 bg-[#050505] border-t border-b border-white/[0.06]">
+          <div className="container mx-auto px-4 sm:px-6 max-w-6xl text-center">
+            <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#E5C378] font-semibold mb-8">
+              Trusted By India's Foremost Sovereign Corporations, Festivals & Royal Families
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               {content.clients.map((client, idx) => (
                 <div 
                   key={idx}
-                  className="px-6 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-300 font-medium text-sm hover:border-[#E8B923]/40 hover:text-white transition-all shadow-sm"
+                  className="px-5 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.08] text-zinc-300 font-cinzel font-medium text-xs sm:text-sm hover:border-[#E5C378]/50 hover:text-[#E5C378] transition-all duration-300 shadow-sm"
                 >
                   {client}
                 </div>
@@ -443,3 +464,4 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+

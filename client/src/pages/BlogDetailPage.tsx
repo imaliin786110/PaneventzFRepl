@@ -11,11 +11,8 @@ import {
   ArrowRight, 
   Tag, 
   Share2, 
-  Bookmark, 
   Check, 
-  Sparkles,
-  Building2,
-  CheckCircle2
+  Sparkles
 } from "lucide-react";
 
 interface BlogPost {
@@ -139,12 +136,12 @@ Live events serve as the premier content studio. Our cinematic production teams 
 
   if (!match || !post) {
     return (
-      <div className="bg-[#090D16] text-[#F9FAFB] min-h-screen">
+      <div className="bg-[#050505] text-white min-h-screen font-sans">
         <Header />
         <main className="py-32 text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Editorial Post Not Found</h1>
+          <h1 className="text-3xl font-cinzel font-bold text-white mb-4">Editorial Post Not Found</h1>
           <Link href="/blog">
-            <Button className="bg-[#E8B923] text-black font-semibold">Back to Journal</Button>
+            <Button className="bg-[#E5C378] text-black font-cinzel font-bold">Back to Journal</Button>
           </Link>
         </main>
         <Footer />
@@ -162,10 +159,10 @@ Live events serve as the premier content studio. Our cinematic production teams 
           const body = parts[1];
           return (
             <div key={index} className="mb-8">
-              <h3 className="text-xl sm:text-2xl font-playfair font-bold text-[#E8B923] mb-3">
+              <h3 className="text-xl sm:text-2xl font-cinzel font-bold text-[#E5C378] mb-3">
                 {heading}
               </h3>
-              <p className="text-neutral-300 text-base sm:text-lg leading-relaxed font-light">
+              <p className="text-zinc-300 text-base sm:text-lg leading-relaxed font-light">
                 {body}
               </p>
             </div>
@@ -173,13 +170,13 @@ Live events serve as the premier content studio. Our cinematic production teams 
         } else if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
           const text = paragraph.replace(/\*\*/g, '');
           return (
-            <h3 key={index} className="text-xl sm:text-2xl font-playfair font-bold text-[#E8B923] mb-3 mt-8">
+            <h3 key={index} className="text-xl sm:text-2xl font-cinzel font-bold text-[#E5C378] mb-3 mt-8">
               {text}
             </h3>
           );
         } else {
           return (
-            <p key={index} className="text-neutral-300 text-base sm:text-lg leading-relaxed font-light mb-6">
+            <p key={index} className="text-zinc-300 text-base sm:text-lg leading-relaxed font-light mb-6">
               {paragraph}
             </p>
           );
@@ -190,14 +187,14 @@ Live events serve as the premier content studio. Our cinematic production teams 
   const relatedPosts = blogPosts.filter(p => p.slug !== post.slug).slice(0, 2);
 
   return (
-    <div className="bg-[#090D16] text-[#F9FAFB] min-h-screen selection:bg-[#E8B923]/30 selection:text-[#E8B923]">
+    <div className="bg-[#050505] text-white min-h-screen selection:bg-[#E5C378] selection:text-black font-sans">
       <Header />
 
       <main className="pt-24 md:pt-32 pb-24">
         {/* Article Breadcrumb & Back */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link href="/blog">
-            <button className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-neutral-400 hover:text-[#E8B923] transition-colors py-2">
+            <button className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-[#E5C378] transition-colors py-2 cursor-pointer">
               <ArrowLeft className="w-4 h-4" />
               Back to Executive Journal
             </button>
@@ -208,31 +205,31 @@ Live events serve as the premier content studio. Our cinematic production teams 
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mb-10">
             <div className="flex items-center gap-3 mb-6">
-              <span className="px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-bold uppercase tracking-wider">
+              <span className="px-3.5 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-xs font-mono font-semibold uppercase tracking-wider">
                 {post.category}
               </span>
-              <span className="text-xs text-neutral-500 font-mono">•</span>
-              <span className="text-xs text-neutral-400 font-mono flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#E8B923]" />
+              <span className="text-xs text-zinc-600 font-mono">•</span>
+              <span className="text-xs text-zinc-400 font-mono flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-[#E5C378]" />
                 {post.readTime}
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-white tracking-tight leading-tight mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-white tracking-tight leading-tight mb-8">
               {post.title}
             </h1>
 
             {/* Author bar & share actions */}
-            <div className="p-5 rounded-2xl glass-card border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="p-6 rounded-3xl bg-[#0D0D0E]/90 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xl">
               <div className="flex items-center gap-4">
                 <img 
                   src={post.authorImage} 
                   alt={post.author} 
-                  className="w-12 h-12 rounded-full object-cover border-2 border-[#E8B923]"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-[#E5C378]"
                 />
                 <div>
-                  <h4 className="text-sm font-semibold text-white">{post.author}</h4>
-                  <p className="text-xs text-neutral-400">{post.authorTitle} • Published {formatDate(new Date(post.publishDate))}</p>
+                  <h4 className="text-sm font-cinzel font-bold text-white">{post.author}</h4>
+                  <p className="text-xs text-zinc-400 font-mono">{post.authorTitle} • Published {formatDate(new Date(post.publishDate))}</p>
                 </div>
               </div>
 
@@ -240,9 +237,9 @@ Live events serve as the premier content studio. Our cinematic production teams 
                 <Button 
                   onClick={handleShare}
                   variant="outline" 
-                  className="border-white/10 hover:border-[#E8B923]/50 text-neutral-300 hover:text-white bg-white/[0.02] text-xs px-4 py-2 rounded-xl flex items-center gap-2"
+                  className="border-white/10 hover:border-[#E5C378]/50 text-zinc-300 hover:text-white bg-white/[0.02] text-xs font-cinzel px-4 py-2 rounded-xl flex items-center gap-2 cursor-pointer"
                 >
-                  {copied ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4 text-[#E8B923]" />}
+                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4 text-[#E5C378]" />}
                   {copied ? "Link Copied!" : "Share Article"}
                 </Button>
               </div>
@@ -250,22 +247,22 @@ Live events serve as the premier content studio. Our cinematic production teams 
           </header>
 
           {/* Lead Image */}
-          <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 shadow-2xl">
+          <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/[0.08] shadow-2xl">
             <img 
               src={post.image} 
               alt={post.title} 
               className="w-full h-[400px] sm:h-[500px] object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#090D16]/60 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent"></div>
           </div>
 
           {/* Executive Summary Box */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#121826] to-[#0A0E17] border border-[#E8B923]/30 mb-12 shadow-xl">
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0D0D0E] to-[#121215] border border-[#E5C378]/30 mb-12 shadow-2xl">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-[#E8B923]" />
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E8B923]">Executive Takeaway</h4>
+              <Sparkles className="w-4 h-4 text-[#E5C378]" />
+              <h4 className="text-xs font-mono uppercase tracking-[0.2em] font-bold text-[#E5C378]">Executive Takeaway</h4>
             </div>
-            <p className="text-sm sm:text-base text-neutral-200 leading-relaxed font-light italic">
+            <p className="text-base sm:text-lg text-zinc-200 leading-relaxed font-light italic">
               "{post.excerpt}"
             </p>
           </div>
@@ -276,16 +273,16 @@ Live events serve as the premier content studio. Our cinematic production teams 
           </div>
 
           {/* Tag Badges */}
-          <div className="pt-8 pb-10 border-t border-b border-white/10 mb-12">
+          <div className="pt-8 pb-10 border-t border-b border-white/[0.08] mb-12">
             <div className="flex items-center gap-2 mb-4">
-              <Tag className="w-4 h-4 text-[#E8B923]" />
-              <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">Indexed Themes</span>
+              <Tag className="w-4 h-4 text-[#E5C378]" />
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-bold text-zinc-400">Indexed Themes</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, idx) => (
                 <span 
                   key={idx} 
-                  className="px-3 py-1 rounded-xl bg-white/[0.04] border border-white/10 text-neutral-300 text-xs font-medium"
+                  className="px-3.5 py-1 rounded-xl bg-white/[0.02] border border-white/[0.08] text-zinc-300 text-xs font-mono"
                 >
                   #{tag}
                 </span>
@@ -294,17 +291,17 @@ Live events serve as the premier content studio. Our cinematic production teams 
           </div>
 
           {/* Author Biography Box */}
-          <div className="p-8 rounded-3xl glass-card border border-[#E8B923]/20 mb-16 relative overflow-hidden">
+          <div className="p-8 rounded-3xl bg-[#0D0D0E]/90 border border-[#E5C378]/30 mb-16 relative overflow-hidden shadow-2xl">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
               <img 
                 src={post.authorImage} 
                 alt={post.author} 
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-[#E8B923] shadow-lg shadow-[#E8B923]/20"
+                className="w-20 h-20 rounded-2xl object-cover border-2 border-[#E5C378] shadow-lg shadow-[#E5C378]/20"
               />
               <div>
-                <h4 className="text-lg font-playfair font-bold text-white mb-1">{post.author}</h4>
-                <p className="text-xs text-[#E8B923] font-semibold mb-3">{post.authorTitle}</p>
-                <p className="text-xs text-neutral-300 leading-relaxed font-light">
+                <h4 className="text-lg font-cinzel font-bold text-white mb-1">{post.author}</h4>
+                <p className="text-xs text-[#E5C378] font-mono uppercase tracking-wider mb-3">{post.authorTitle}</p>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
                   With over 30 years of elite industry stewardship, Imran Mirza has directed landmark corporate summits, presidential state galas, and ultra-luxury weddings across India and the Middle East.
                 </p>
               </div>
@@ -313,10 +310,10 @@ Live events serve as the premier content studio. Our cinematic production teams 
 
           {/* Related Articles Section */}
           <div>
-            <h3 className="text-2xl font-playfair font-bold text-white mb-8 flex items-center justify-between">
+            <h3 className="text-2xl font-cinzel font-bold text-white mb-8 flex items-center justify-between">
               <span>Related Editorial Dispatches</span>
               <Link href="/blog">
-                <span className="text-xs text-[#E8B923] font-sans font-semibold flex items-center gap-1 hover:underline">
+                <span className="text-xs text-[#E5C378] font-cinzel font-semibold flex items-center gap-1 hover:underline">
                   All Articles <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </Link>
@@ -325,27 +322,27 @@ Live events serve as the premier content studio. Our cinematic production teams 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {relatedPosts.map((rel) => (
                 <Link key={rel.id} href={`/blog/${rel.slug}`}>
-                  <div className="glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-[#E8B923]/40 transition-all p-5 flex flex-col justify-between group cursor-pointer h-full">
+                  <div className="bg-[#0D0D0E]/90 hover:bg-[#121214] rounded-3xl overflow-hidden border border-white/[0.08] hover:border-[#E5C378]/40 transition-all p-6 flex flex-col justify-between group cursor-pointer h-full shadow-2xl">
                     <div>
-                      <div className="relative h-40 rounded-xl overflow-hidden mb-4">
+                      <div className="relative h-44 rounded-2xl overflow-hidden mb-5">
                         <img 
                           src={rel.image} 
                           alt={rel.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-90"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-[#E8B923] text-[10px] font-bold uppercase">
+                        <span className="absolute top-2.5 left-2.5 px-3 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[#E5C378] text-[10px] font-mono uppercase tracking-wider font-bold">
                           {rel.category}
                         </span>
                       </div>
-                      <h4 className="text-base font-playfair font-bold text-white mb-2 line-clamp-2 group-hover:text-[#E8B923] transition-colors">
+                      <h4 className="text-base font-cinzel font-bold text-white mb-2 line-clamp-2 group-hover:text-[#E5C378] transition-colors">
                         {rel.title}
                       </h4>
-                      <p className="text-xs text-neutral-400 line-clamp-2 font-light mb-4">
+                      <p className="text-xs text-zinc-400 line-clamp-2 font-light mb-4">
                         {rel.excerpt}
                       </p>
                     </div>
 
-                    <span className="text-xs text-[#E8B923] font-semibold flex items-center gap-1 pt-2 border-t border-white/5">
+                    <span className="text-xs text-[#E5C378] font-cinzel font-bold flex items-center gap-1 pt-3 border-t border-white/[0.08]">
                       Read Dispatch <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
