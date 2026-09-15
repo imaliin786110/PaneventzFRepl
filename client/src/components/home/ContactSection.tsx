@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,56 +22,136 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
-import { MapPin, Phone, Mail, Clock, Send, Sparkles, Instagram, Facebook, Twitter, Linkedin, CheckCircle2 } from "lucide-react";
+import { 
+  Phone, 
+  Mail, 
+  Send, 
+  Sparkles, 
+  CheckCircle2, 
+  MessageCircle, 
+  Calendar, 
+  MapPin, 
+  Users, 
+  DollarSign, 
+  AlertCircle,
+  Building2,
+  Heart,
+  Trophy,
+  Award,
+  Crown,
+  ShieldCheck
+} from "lucide-react";
 
-// Contact form schema
+// Expanded Contact Form Schema with All Event Dossier Fields
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
+  name: z.string().min(2, "Full name must be at least 2 characters."),
+  phone: z.string().min(10, "Please enter a valid phone number (min 10 digits)."),
   email: z.string().email("Please enter a valid email address."),
-  phone: z.string().min(10, "Please enter a valid phone number with area code."),
   eventType: z.string().min(1, "Please select an event category."),
-  message: z.string().min(10, "Message must be at least 10 characters."),
+  eventDate: z.string().optional(),
+  city: z.string().min(2, "Please provide the anticipated city or venue."),
+  guestCount: z.string().optional(),
+  budgetRange: z.string().optional(),
+  eventVision: z.string().min(10, "Please share at least 10 characters detailing your event vision.")
 });
 
-type ContactFormValues = z.infer<typeof contactFormSchema>;
+export type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+const EVENT_TYPE_MAP: Record<string, string> = {
+  corporate: "Corporate Conclave / Annual Summit",
+  wedding: "Royal Destination Wedding / Celebration",
+  weddings: "Royal Destination Wedding / Celebration",
+  "live-entertainment": "Arena Concert / Live Entertainment",
+  sports: "Arena Concert / Live Entertainment",
+  cultural: "Arena Concert / Live Entertainment",
+  "awards-launches": "Awards Gala & Product Launch",
+  awards: "Awards Gala & Product Launch",
+  launches: "Awards Gala & Product Launch",
+  "private-experiences": "Private Soirée / Sovereign Experience",
+  private: "Private Soirée / Sovereign Experience"
+};
 
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submissionDossier, setSubmissionDossier] = useState<ContactFormValues | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
-      email: "",
       phone: "",
+      email: "",
       eventType: "",
-      message: ""
+      eventDate: "",
+      city: "",
+      guestCount: "",
+      budgetRange: "",
+      eventVision: ""
     },
   });
 
+  // Pre-populate event type if passed via query parameter (e.g., /contact?service=corporate)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const serviceParam = searchParams.get("service")?.toLowerCase();
+      if (serviceParam && EVENT_TYPE_MAP[serviceParam]) {
+        form.setValue("eventType", EVENT_TYPE_MAP[serviceParam]);
+      }
+    }
+  }, [form]);
+
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     
+    // Format full structured message for backend storage & admin notification
+    const formattedMessage = [
+      `Event Category: ${data.eventType}`,
+      `Anticipated Date: ${data.eventDate || "Flexible / To Be Decided"}`,
+      `City / Venue: ${data.city}`,
+      `Estimated Guests: ${data.guestCount || "Not specified"}`,
+      `Budget Range: ${data.budgetRange || "To be discussed"}`,
+      ``,
+      `Event Vision & Production Scope:`,
+      data.eventVision
+    ].join("\n");
+
+    const payload = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      eventType: data.eventType,
+      message: formattedMessage,
+      // Pass individual fields as well
+      eventDate: data.eventDate || "",
+      city: data.city,
+      guestCount: data.guestCount || "",
+      budgetRange: data.budgetRange || "",
+      eventVision: data.eventVision
+    };
+
     try {
-      await apiRequest("POST", "/api/contact", data);
+      await apiRequest("POST", "/api/contact", payload);
+      setSubmissionDossier(data);
       setIsSuccess(true);
       
       toast({
-        title: "Inquiry Received",
-        description: "Thank you for reaching out to Pan Eventz. Our senior event director will contact you within 24 hours.",
-        variant: "default",
+        title: "Event Dossier Transmitted",
+        description: "Thank you for reaching out to Pan Eventz. Imran Mirza and our senior production directors will review your brief promptly.",
       });
-      
+
       form.reset();
-      setTimeout(() => setIsSuccess(false), 5000);
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch (error: any) {
+      console.error("Error submitting event enquiry form:", error);
+      setSubmitError("We could not transmit your inquiry automatically. Please reach us directly via WhatsApp or phone.");
       
       toast({
-        title: "Submission Issue",
-        description: "We could not transmit your inquiry automatically. Please reach us directly at +91 98213 37523.",
+        title: "Transmission Issue",
+        description: "Please reach us directly at +91 98213 37523 or on WhatsApp.",
         variant: "destructive",
       });
     } finally {
@@ -80,99 +160,144 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-[#090D16] relative overflow-hidden border-t border-white/5">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-0 w-96 h-96 bg-[#E8B923]/10 rounded-full blur-3xl pointer-events-none" />
+    <section id="contact" className="py-20 md:py-28 bg-[#050505] relative overflow-hidden border-t border-white/[0.08]">
+      {/* Ambient Champagne Lighting Bloom */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E5C378]/[0.03] rounded-full blur-[180px] pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-6xl">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8B923]/10 border border-[#E8B923]/30 text-[#E8B923] text-xs font-semibold uppercase tracking-widest mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Consult With Our Curators</span>
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-[11px] font-mono uppercase tracking-[0.2em] mb-5 shadow-lg shadow-[#E5C378]/5 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#E5C378]" />
+            <span>Commission A Production</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15] mb-4">
-            Let's Craft Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8B923] via-amber-200 to-[#E8B923]">Bespoke Event</span>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cinzel font-bold text-white tracking-tight leading-[1.15] mb-5">
+            Bespoke Event <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4E8C1] via-[#E5C378] to-[#C5981B]">Enquiry Dossier</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base font-light max-w-xl mx-auto">
-            Connect with Imran Mirza and the Pan Eventz master production crew to bring your grandest celebration to life.
+
+          <p className="text-zinc-400 text-sm sm:text-base font-light max-w-2xl mx-auto leading-relaxed">
+            Provide the details of your upcoming occasion. Founder Imran Mirza and our senior production architects will prepare a comprehensive conceptual blueprint and technical staging proposal.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
+        {/* Two-Column Enquiry Suite */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* Form Column */}
-          <div className="lg:col-span-7 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-9 rounded-3xl border border-white/10 shadow-2xl">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 font-montserrat">
-              Reserve a Consultation
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-400 mb-6 font-light">
-              Receive a detailed conceptual proposal and technical scope within 24 hours.
-            </p>
-
-            {isSuccess ? (
-              <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-                <h4 className="text-lg font-bold text-white">Inquiry Received</h4>
-                <p className="text-sm text-slate-300">
-                  Thank you! Imran Mirza and our senior event directors have received your inquiry and will connect with you promptly.
+          {/* Form Column (7 Cols on Desktop) */}
+          <div className="lg:col-span-7 bg-[#0D0D10]/95 backdrop-blur-2xl p-6 sm:p-10 rounded-3xl border border-white/[0.08] shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-5 mb-6">
+              <div>
+                <h3 className="text-lg sm:text-xl font-cinzel font-bold text-white">
+                  Event Briefing Form
+                </h3>
+                <p className="text-xs text-zinc-400 font-light mt-0.5">
+                  All fields marked with an asterisk (*) are required.
                 </p>
               </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[10px] font-mono text-[#E5C378]">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Confidential</span>
+              </span>
+            </div>
+
+            {/* Success View */}
+            {isSuccess && submissionDossier ? (
+              <div className="py-10 px-4 text-center space-y-6 animate-in fade-in zoom-in-95 duration-500">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#E5C378] text-black flex items-center justify-center mx-auto shadow-xl shadow-[#E5C378]/20">
+                  <CheckCircle2 className="w-9 h-9" />
+                </div>
+
+                <div className="space-y-2">
+                  <span className="text-xs font-mono uppercase tracking-widest text-[#E5C378]">
+                    Transmission Confirmed
+                  </span>
+                  <h4 className="text-2xl font-cinzel font-bold text-white">
+                    Event Dossier Received
+                  </h4>
+                  <p className="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto font-light leading-relaxed">
+                    Thank you, <strong className="text-white font-medium">{submissionDossier.name}</strong>. Your enquiry for a <strong className="text-[#E5C378] font-medium">{submissionDossier.eventType}</strong> in <strong className="text-white font-medium">{submissionDossier.city}</strong> has been transmitted directly to our executive production desk.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] max-w-md mx-auto text-left text-xs font-mono space-y-1.5 text-zinc-400">
+                  <div><span className="text-zinc-500">Date:</span> {submissionDossier.eventDate || "To be decided"}</div>
+                  <div><span className="text-zinc-500">Contact:</span> {submissionDossier.phone} • {submissionDossier.email}</div>
+                  <div><span className="text-zinc-500">Guests:</span> {submissionDossier.guestCount || "Not specified"}</div>
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={`https://wa.me/918082024787?text=${encodeURIComponent(
+                      `Hi Pan Eventz, I just submitted an inquiry for a ${submissionDossier.eventType} in ${submissionDossier.city} under the name ${submissionDossier.name}.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white text-xs font-cinzel font-bold hover:brightness-110 shadow-lg transition-all"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Follow Up On WhatsApp</span>
+                  </a>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setIsSuccess(false);
+                      setSubmissionDossier(null);
+                    }}
+                    className="w-full sm:w-auto border-white/20 text-zinc-300 hover:text-white bg-transparent text-xs font-cinzel rounded-full px-6 py-3"
+                  >
+                    Submit Another Brief
+                  </Button>
+                </div>
+              </div>
             ) : (
+              /* The Main Active Form */
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
+                  
+                  {/* Error Alert if Submission Fails */}
+                  {submitError && (
+                    <div className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="font-semibold">{submitError}</p>
+                        <p className="text-[11px] text-red-300">
+                          Direct Line: <a href="tel:+919821337523" className="underline font-bold">+91 98213 37523</a> • WhatsApp: <a href="https://wa.me/918082024787" target="_blank" rel="noreferrer" className="underline font-bold">+91 80820 24787</a>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Row 1: Name & Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <FormField
                       control={form.control}
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-slate-300 text-xs sm:text-sm font-medium">
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
                             Full Name *
                           </FormLabel>
                           <FormControl>
                             <Input
                               {...field}
-                              placeholder="e.g. Rahul Kapoor"
-                              className="bg-black/40 border-white/10 text-white placeholder:text-slate-500 rounded-xl focus:border-[#E8B923] focus:ring-[#E8B923]/20"
+                              placeholder="e.g. Rahul Sharma"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
-                          <FormMessage className="text-rose-400 text-xs" />
+                          <FormMessage className="text-red-400 text-xs font-mono" />
                         </FormItem>
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-slate-300 text-xs sm:text-sm font-medium">
-                            Email Address *
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type="email"
-                              placeholder="e.g. rahul@company.com"
-                              className="bg-black/40 border-white/10 text-white placeholder:text-slate-500 rounded-xl focus:border-[#E8B923] focus:ring-[#E8B923]/20"
-                            />
-                          </FormControl>
-                          <FormMessage className="text-rose-400 text-xs" />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-slate-300 text-xs sm:text-sm font-medium">
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
                             Phone / WhatsApp *
                           </FormLabel>
                           <FormControl>
@@ -180,10 +305,34 @@ const ContactSection = () => {
                               {...field}
                               type="tel"
                               placeholder="+91 98213 37523"
-                              className="bg-black/40 border-white/10 text-white placeholder:text-slate-500 rounded-xl focus:border-[#E8B923] focus:ring-[#E8B923]/20"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
-                          <FormMessage className="text-rose-400 text-xs" />
+                          <FormMessage className="text-red-400 text-xs font-mono" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Row 2: Email & Event Type */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                            Email Address *
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="email"
+                              placeholder="name@company.com"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-400 text-xs font-mono" />
                         </FormItem>
                       )}
                     />
@@ -193,63 +342,167 @@ const ContactSection = () => {
                       name="eventType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-slate-300 text-xs sm:text-sm font-medium">
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
                             Event Category *
                           </FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value || undefined}>
                             <FormControl>
-                              <SelectTrigger className="bg-black/40 border-white/10 text-white rounded-xl focus:border-[#E8B923] focus:ring-[#E8B923]/20">
-                                <SelectValue placeholder="Select event category" />
+                              <SelectTrigger className="bg-black/50 border-white/10 text-white rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm">
+                                <SelectValue placeholder="Select Category" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-[#0e1422] border-white/10 text-white">
-                              <SelectItem value="corporate">Corporate Gala & Conclaves</SelectItem>
-                              <SelectItem value="wedding">Royal Destination Wedding</SelectItem>
-                              <SelectItem value="sports">Sports League & Stadium</SelectItem>
-                              <SelectItem value="concert">Live Concert & Celebrity Management</SelectItem>
-                              <SelectItem value="cultural">Cultural Festival & Exhibitions</SelectItem>
-                              <SelectItem value="av-rental">Sound, Light & Truss Equipment Rental</SelectItem>
-                              <SelectItem value="other">Other Bespoke Event</SelectItem>
+                            <SelectContent className="bg-[#0D0D10] border-white/15 text-white">
+                              <SelectItem value="Corporate Conclave / Annual Summit">Corporate Conclave / Annual Summit</SelectItem>
+                              <SelectItem value="Royal Destination Wedding / Celebration">Royal Destination Wedding / Celebration</SelectItem>
+                              <SelectItem value="Arena Concert / Live Entertainment">Arena Concert / Live Entertainment</SelectItem>
+                              <SelectItem value="Awards Gala & Product Launch">Awards Gala & Product Launch</SelectItem>
+                              <SelectItem value="Private Soirée / Sovereign Experience">Private Soirée / Sovereign Experience</SelectItem>
+                              <SelectItem value="Other Bespoke Production">Other Bespoke Production</SelectItem>
                             </SelectContent>
                           </Select>
-                          <FormMessage className="text-rose-400 text-xs" />
+                          <FormMessage className="text-red-400 text-xs font-mono" />
                         </FormItem>
                       )}
                     />
                   </div>
 
+                  {/* Row 3: Event Date & City */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FormField
+                      control={form.control}
+                      name="eventDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                            Event Date / Timeline
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="e.g. November 2026 / Flexible"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-400 text-xs font-mono" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                            City / Destination *
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="e.g. Mumbai, Udaipur, Delhi, Goa"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-400 text-xs font-mono" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Row 4: Estimated Guest Count & Budget Range */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FormField
+                      control={form.control}
+                      name="guestCount"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                            Estimated Guest Count
+                          </FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value || undefined}>
+                            <FormControl>
+                              <SelectTrigger className="bg-black/50 border-white/10 text-white rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm">
+                                <SelectValue placeholder="Select Attendance Scale" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-[#0D0D10] border-white/15 text-white">
+                              <SelectItem value="Intimate (< 100 Guests)">Intimate (&lt; 100 Guests)</SelectItem>
+                              <SelectItem value="100 – 500 Guests">100 – 500 Guests</SelectItem>
+                              <SelectItem value="500 – 2,000 Delegates">500 – 2,000 Delegates</SelectItem>
+                              <SelectItem value="2,000 – 10,000+ Arena Scale">2,000 – 10,000+ Arena Scale</SelectItem>
+                              <SelectItem value="10,000+ Stadium Festival">10,000+ Stadium Festival</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage className="text-red-400 text-xs font-mono" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="budgetRange"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                            Estimated Budget Range
+                          </FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value || undefined}>
+                            <FormControl>
+                              <SelectTrigger className="bg-black/50 border-white/10 text-white rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm">
+                                <SelectValue placeholder="Select Budget Range" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-[#0D0D10] border-white/15 text-white">
+                              <SelectItem value="₹15 Lakhs – ₹35 Lakhs">₹15 Lakhs – ₹35 Lakhs</SelectItem>
+                              <SelectItem value="₹35 Lakhs – ₹75 Lakhs">₹35 Lakhs – ₹75 Lakhs</SelectItem>
+                              <SelectItem value="₹75 Lakhs – ₹1.5 Crore">₹75 Lakhs – ₹1.5 Crore</SelectItem>
+                              <SelectItem value="₹1.5 Crore – ₹5 Crore+">₹1.5 Crore – ₹5 Crore+</SelectItem>
+                              <SelectItem value="Custom Enterprise / Sovereign Scale">Custom Enterprise / Sovereign Scale</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage className="text-red-400 text-xs font-mono" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Row 5: Event Vision & Requirements */}
                   <FormField
                     control={form.control}
-                    name="message"
+                    name="eventVision"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-slate-300 text-xs sm:text-sm font-medium">
-                          Event Scope & Preferred Dates *
+                        <FormLabel className="text-zinc-300 text-xs font-mono uppercase tracking-wider">
+                          Event Vision & Technical Scope *
                         </FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
                             rows={4}
-                            placeholder="Tell us about expected guest count, venue location, key artist requirements, or AV needs..."
-                            className="bg-black/40 border-white/10 text-white placeholder:text-slate-500 rounded-xl focus:border-[#E8B923] focus:ring-[#E8B923]/20 resize-none"
+                            placeholder="Describe your event ambition, desired atmosphere, technical requirements (audio/video, 4K LED, stage, lighting, artist booking), or special VIP protocols..."
+                            className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 resize-none text-sm p-3.5"
                           />
                         </FormControl>
-                        <FormMessage className="text-rose-400 text-xs" />
+                        <FormMessage className="text-red-400 text-xs font-mono" />
                       </FormItem>
                     )}
                   />
 
+                  {/* Submit Button */}
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#E6193C] to-[#b8132e] hover:from-[#f02246] hover:to-[#c71734] text-white font-semibold py-6 rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 text-base cursor-pointer"
+                    className="w-full bg-gradient-to-r from-[#D4AF37] via-[#E5C378] to-[#C5981B] hover:brightness-110 text-black font-cinzel font-bold py-6 rounded-xl shadow-xl shadow-[#E5C378]/20 transition-all flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-widest cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span>Transmitting Inquiry...</span>
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
+                        Transmitting Event Brief...
+                      </span>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Send Event Inquiry</span>
+                        <span>Transmit Event Dossier</span>
                       </>
                     )}
                   </Button>
@@ -258,123 +511,115 @@ const ContactSection = () => {
             )}
           </div>
 
-          {/* Contact Details Column */}
+          {/* Right Column: Direct Channels & Executive Roster (5 Cols on Desktop) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-5">
-              <h3 className="text-xl sm:text-2xl font-bold text-white font-montserrat mb-4">
-                Headquarters
-              </h3>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#E8B923]/10 border border-[#E8B923]/20 flex items-center justify-center text-[#E8B923] shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">Central Operations</h4>
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-light">
-                      Pan Eventz Headquarters, Mumbai & Delhi NCR, India
-                    </p>
-                  </div>
+            
+            {/* Quick WhatsApp Concierge Card */}
+            <div className="p-7 rounded-3xl bg-[#0D0D10]/95 backdrop-blur-2xl border border-[#25D366]/30 hover:border-[#25D366] transition-all duration-500 shadow-2xl relative overflow-hidden group">
+              <div className="flex items-start gap-4">
+                <div className="w-13 h-13 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center text-[#25D366] shrink-0 group-hover:scale-105 transition-transform">
+                  <MessageCircle className="w-7 h-7" />
                 </div>
-
-                {/* WhatsApp Priority Desk */}
-                <div className="flex items-start gap-4 p-3.5 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30">
-                  <div className="w-10 h-10 rounded-xl bg-[#25D366]/20 border border-[#25D366]/40 flex items-center justify-center text-[#25D366] shrink-0">
-                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-bold text-white flex items-center justify-between">
-                      <span>WhatsApp VIP Desk</span>
-                      <span className="text-[10px] text-[#25D366] font-mono uppercase bg-[#25D366]/20 px-2 py-0.5 rounded">Fastest</span>
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-300 font-mono mt-0.5">
-                      <a href="https://wa.me/918082024787" target="_blank" rel="noreferrer" className="text-[#25D366] hover:underline font-bold">
-                        +91 80820 24787
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">Direct Production Hotline</h4>
-                    <p className="text-xs sm:text-sm text-slate-300 font-light font-mono">
-                      <a href="tel:+919821337523" className="hover:text-[#E8B923] transition-colors">+91 98213 37523</a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 shrink-0">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">Email Desk</h4>
-                    <p className="text-xs sm:text-sm text-slate-400 font-light">
-                      <a href="mailto:info@paneventz.com" className="hover:text-[#E8B923] transition-colors">info@paneventz.com</a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">Operational Hours</h4>
-                    <p className="text-xs sm:text-sm text-slate-400 font-light">
-                      Mon – Sat: 9:00 AM – 8:00 PM <br />
-                      24/7 On-Site Live Event Emergency Support
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Social Channels */}
-              <div className="pt-4 border-t border-white/10">
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                  Follow Our Productions
-                </div>
-                <div className="flex items-center gap-3">
-                  <a href="https://wa.me/918082024787" target="_blank" rel="noreferrer" title="WhatsApp" className="w-9 h-9 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-black border border-[#25D366]/40 transition-all flex items-center justify-center">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                    </svg>
-                  </a>
-                  <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-[#E8B923] text-white hover:text-black border border-white/10 transition-all flex items-center justify-center">
-                    <Instagram className="w-4 h-4" />
-                  </a>
-                  <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-[#E8B923] text-white hover:text-black border border-white/10 transition-all flex items-center justify-center">
-                    <Facebook className="w-4 h-4" />
-                  </a>
-                  <a href="https://twitter.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-[#E8B923] text-white hover:text-black border border-white/10 transition-all flex items-center justify-center">
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg bg-white/[0.05] hover:bg-[#E8B923] text-white hover:text-black border border-white/10 transition-all flex items-center justify-center">
-                    <Linkedin className="w-4 h-4" />
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-[#25D366] uppercase tracking-widest font-bold">
+                    Fastest Response
+                  </span>
+                  <h4 className="text-lg font-cinzel font-bold text-white">
+                    WhatsApp Concierge
+                  </h4>
+                  <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                    Direct instant line with Pan Eventz production coordinators.
+                  </p>
+                  <a
+                    href="https://wa.me/918082024787?text=Hi%20Pan%20Eventz,%20I%20would%20like%20to%20discuss%20an%20upcoming%20event."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-mono text-[#25D366] hover:underline font-bold pt-2"
+                  >
+                    <span>+91 80820 24787</span>
+                    <Sparkles className="w-3.5 h-3.5" />
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Google Maps Frame */}
-            <div className="rounded-3xl overflow-hidden h-48 border border-white/10 shadow-xl">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609959!2d72.74109995!3d19.0821978!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1705667401820!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
-                allowFullScreen
-                loading="lazy"
-                title="Pan Eventz Operations"
-              />
+            {/* Direct VIP Line Card */}
+            <div className="p-7 rounded-3xl bg-[#0D0D10]/95 backdrop-blur-2xl border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 shadow-2xl relative overflow-hidden group">
+              <div className="flex items-start gap-4">
+                <div className="w-13 h-13 rounded-2xl bg-[#E5C378]/10 border border-[#E5C378]/30 flex items-center justify-center text-[#E5C378] shrink-0 group-hover:scale-105 transition-transform">
+                  <Phone className="w-7 h-7" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-[#E5C378] uppercase tracking-widest font-bold">
+                    Direct Executive Line
+                  </span>
+                  <h4 className="text-lg font-cinzel font-bold text-white">
+                    VIP Telephone Desk
+                  </h4>
+                  <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                    Direct phone communication for enterprise and sovereign clients.
+                  </p>
+                  <a
+                    href="tel:+919821337523"
+                    className="inline-flex items-center gap-2 text-sm font-mono text-zinc-200 hover:text-[#E5C378] transition-colors font-bold pt-2"
+                  >
+                    <span>+91 98213 37523</span>
+                  </a>
+                </div>
+              </div>
             </div>
+
+            {/* Executive Email Desk Card */}
+            <div className="p-7 rounded-3xl bg-[#0D0D10]/95 backdrop-blur-2xl border border-white/[0.08] hover:border-[#E5C378]/40 transition-all duration-500 shadow-2xl relative overflow-hidden group">
+              <div className="flex items-start gap-4">
+                <div className="w-13 h-13 rounded-2xl bg-[#E5C378]/10 border border-[#E5C378]/30 flex items-center justify-center text-[#E5C378] shrink-0 group-hover:scale-105 transition-transform">
+                  <Mail className="w-7 h-7" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-[#E5C378] uppercase tracking-widest font-bold">
+                    Official Inquiries & RFPs
+                  </span>
+                  <h4 className="text-lg font-cinzel font-bold text-white">
+                    Executive Email Desk
+                  </h4>
+                  <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                    Transmit official RFPs, tender documents, and speaker riders.
+                  </p>
+                  <a
+                    href="mailto:info@paneventz.com"
+                    className="inline-flex items-center gap-2 text-sm font-mono text-zinc-200 hover:text-[#E5C378] transition-colors font-bold pt-2"
+                  >
+                    <span>info@paneventz.com</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Operations Hubs */}
+            <div className="p-7 rounded-3xl bg-[#0D0D10]/95 backdrop-blur-2xl border border-white/[0.08] shadow-2xl space-y-4">
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-[#E5C378]" />
+                <h4 className="text-base font-cinzel font-bold text-white">
+                  Headquarters & Regional Hubs
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-xs font-mono border-t border-white/[0.06] pt-4">
+                <div>
+                  <span className="text-[#E5C378] block font-bold">Western Hub</span>
+                  <span className="text-zinc-400">Mumbai Central HQ</span>
+                </div>
+                <div>
+                  <span className="text-[#E5C378] block font-bold">Northern Hub</span>
+                  <span className="text-zinc-400">Delhi NCR Division</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] font-mono text-zinc-400">
+                Pan-India On-Ground Deployment Capabilities across 28 states & destination venues.
+              </div>
+            </div>
+
           </div>
 
         </div>
