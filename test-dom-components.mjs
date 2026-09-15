@@ -183,6 +183,29 @@ async function auditFrontendComponents() {
     recordIssue('Footer contacts', 'Missing contact details or old number still present');
   }
 
+  // 11. Audit Media & Data Asset Integrity
+  console.log('\n--- 11. Auditing Media & Data Asset Integrity ---');
+  try {
+    const { execSync } = await import('child_process');
+    const trackedFiles = execSync('git ls-files', { encoding: 'utf-8' }).trim().split('\n').map(s => s.trim());
+    const mediaFiles = trackedFiles.filter(f => /\.(png|jpg|jpeg|gif|webp|svg|mp4|webm|pdf)$/i.test(f));
+    const dataFiles = trackedFiles.filter(f => f.startsWith('data/') && f.endsWith('.json'));
+
+    if (mediaFiles.length === 58) {
+      recordPass(`Tracked media files count intact: exactly ${mediaFiles.length} files (zero deleted/renamed)`);
+    } else {
+      recordIssue('Media Integrity', `Expected 58 media files, found ${mediaFiles.length}`);
+    }
+
+    if (dataFiles.length === 7) {
+      recordPass(`Tracked data files count intact: exactly ${dataFiles.length} files in data/ directory`);
+    } else {
+      recordIssue('Data Integrity', `Expected 7 data files in data/, found ${dataFiles.length}`);
+    }
+  } catch (err) {
+    recordIssue('Media & Data Integrity Check', err.message);
+  }
+
   console.log('\n======================================================');
   console.log(`TOTAL VERIFIED: ${verifications.length}`);
   console.log(`TOTAL ISSUES: ${issues.length}`);
