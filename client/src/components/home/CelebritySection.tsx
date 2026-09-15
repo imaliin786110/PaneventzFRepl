@@ -5,7 +5,7 @@ import {
   Star,
   CheckCircle2
 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getSrcSet } from "@/lib/image-utils";
 
 interface CelebrityImage {
@@ -149,6 +149,12 @@ const CelebritySection = () => {
       {/* Lightbox Dialog */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-[#070709] border-white/15 text-white shadow-2xl">
+          <DialogTitle className="sr-only">
+            {selectedImage?.title || "Celebrity Archive Photo"}
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            {selectedImage?.subtitle || "Pan Eventz celebrity gala and event photography"}
+          </DialogDescription>
           {selectedImage && (
             <div className="relative">
               <div className="max-h-[80vh] flex items-center justify-center bg-black">

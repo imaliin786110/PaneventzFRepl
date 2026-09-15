@@ -466,6 +466,7 @@ const MediaPage = () => {
                   return (
                     <button
                       key={cat.id}
+                      type="button"
                       onClick={() => {
                         setSelectedCategory(cat.id);
                         setSelectedFolder("all"); // reset specific folder when category changes
@@ -491,10 +492,13 @@ const MediaPage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Filter by event, VIP, venue..."
+                  aria-label="Filter gallery by keyword, VIP, or venue"
                   className="w-full pl-10 pr-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] focus:border-[#E5C378]/60 text-xs text-white placeholder:text-zinc-500 focus:outline-none transition-colors"
                 />
                 {searchQuery && (
                   <button 
+                    type="button"
+                    aria-label="Clear search"
                     onClick={() => setSearchQuery("")}
                     className="absolute right-3 text-zinc-400 hover:text-white"
                   >
@@ -512,6 +516,7 @@ const MediaPage = () => {
               </span>
 
               <button
+                type="button"
                 onClick={() => setSelectedFolder("all")}
                 className={cn(
                   "px-3 py-1 rounded-lg text-xs font-mono transition-colors whitespace-nowrap shrink-0 border cursor-pointer",
@@ -530,6 +535,7 @@ const MediaPage = () => {
                   return (
                     <button
                       key={folder.name}
+                      type="button"
                       onClick={() => setSelectedFolder(folder.name)}
                       disabled={folder.isLoading}
                       className={cn(
@@ -553,10 +559,13 @@ const MediaPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search archive..."
+                aria-label="Filter gallery archive on mobile"
                 className="w-full pl-10 pr-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] focus:border-[#E5C378]/60 text-xs text-white placeholder:text-zinc-500 focus:outline-none transition-colors"
               />
               {searchQuery && (
                 <button 
+                  type="button"
+                  aria-label="Clear search"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 text-zinc-400 hover:text-white"
                 >
@@ -593,6 +602,7 @@ const MediaPage = () => {
                     : `No photographs found in the selected category or collection.`}
                 </p>
                 <button
+                  type="button"
                   onClick={() => {
                     setSelectedCategory("all");
                     setSelectedFolder("all");
@@ -750,15 +760,19 @@ const MediaPage = () => {
                 {/* Right Action Controls: Fullscreen toggle & Close */}
                 <div className="flex items-center gap-2">
                   <button
+                    type="button"
                     onClick={() => setIsFullscreenMode(!isFullscreenMode)}
                     className="p-2 rounded-full bg-white/[0.05] hover:bg-white/20 text-zinc-300 hover:text-white transition-colors cursor-pointer hidden sm:flex items-center justify-center"
+                    aria-label={isFullscreenMode ? "Exit Fullscreen" : "Enter Fullscreen"}
                     title={isFullscreenMode ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
                   >
                     {isFullscreenMode ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                   </button>
                   <button
+                    type="button"
                     onClick={closeImageModal}
                     className="p-2 rounded-full bg-white/[0.05] hover:bg-red-500/20 text-zinc-300 hover:text-red-400 transition-colors cursor-pointer flex items-center justify-center"
+                    aria-label="Close dialog"
                     title="Close (Esc)"
                   >
                     <X className="w-5 h-5" />
@@ -770,6 +784,7 @@ const MediaPage = () => {
               <div className="relative flex-1 flex items-center justify-center overflow-hidden bg-black p-2 sm:p-6 min-h-[300px]">
                 {/* Floating Previous Button */}
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigatePhoto("prev");
@@ -797,6 +812,7 @@ const MediaPage = () => {
 
                 {/* Floating Next Button */}
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigatePhoto("next");

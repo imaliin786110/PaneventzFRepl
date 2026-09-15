@@ -206,6 +206,7 @@ const BlogPage = () => {
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                 <Input
                   type="text"
+                  aria-label="Search editorial articles by title or keyword"
                   placeholder="Search articles by title, acoustic technology, wedding trends, or keywords..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -213,8 +214,10 @@ const BlogPage = () => {
                 />
                 {searchTerm && (
                   <button 
+                    type="button"
+                    aria-label="Clear search"
                     onClick={() => setSearchTerm("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-400 hover:text-white px-2.5 py-1 rounded-lg bg-white/10"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-400 hover:text-white px-2.5 py-1 rounded-lg bg-white/10 cursor-pointer"
                   >
                     Clear
                   </button>
@@ -228,8 +231,9 @@ const BlogPage = () => {
                   return (
                     <button
                       key={cat}
+                      type="button"
                       onClick={() => setFilterCategory(cat)}
-                      className={`px-4 py-2 rounded-xl text-xs font-cinzel font-semibold uppercase tracking-wider transition-all duration-300 ${
+                      className={`px-4 py-2 rounded-xl text-xs font-cinzel font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                         isActive
                           ? "bg-gradient-to-r from-[#D4AF37] via-[#E5C378] to-[#C5981B] text-black shadow-lg shadow-[#E5C378]/20 font-bold"
                           : "bg-white/[0.02] text-zinc-400 hover:text-white border border-white/[0.08] hover:border-[#E5C378]/40 hover:bg-white/[0.04]"
@@ -536,6 +540,7 @@ const BlogPage = () => {
                     <Input
                       type="email"
                       required
+                      aria-label="Executive email address for newsletter subscription"
                       placeholder="Enter executive email address..."
                       value={emailInput}
                       onChange={(e) => setEmailInput(e.target.value)}

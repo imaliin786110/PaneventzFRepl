@@ -149,7 +149,10 @@ const EventDetailPage = () => {
         {/* Breadcrumb */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <Link href="/media">
-            <button className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-[#E5C378] transition-colors py-2 cursor-pointer">
+            <button 
+              type="button"
+              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-[#E5C378] transition-colors py-2 cursor-pointer"
+            >
               <ArrowLeft className="w-4 h-4" />
               Back to Media & Showcase
             </button>
@@ -461,6 +464,8 @@ const EventDetailPage = () => {
                 className="max-h-[85vh] w-auto rounded-3xl object-contain border border-[#E5C378]/30 shadow-2xl"
               />
               <button 
+                type="button"
+                aria-label="Close modal"
                 onClick={() => setSelectedPhoto(null)}
                 className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/80 border border-white/30 text-white flex items-center justify-center text-lg hover:bg-[#E5C378] hover:text-black transition-colors cursor-pointer"
               >

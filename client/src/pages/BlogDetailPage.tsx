@@ -219,7 +219,10 @@ Live events serve as the premier content studio. Our cinematic production teams 
         {/* Article Breadcrumb & Back */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link href="/blog">
-            <button className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-[#E5C378] transition-colors py-2 cursor-pointer">
+            <button 
+              type="button"
+              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-[#E5C378] transition-colors py-2 cursor-pointer"
+            >
               <ArrowLeft className="w-4 h-4" />
               Back to Executive Journal
             </button>

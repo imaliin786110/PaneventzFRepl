@@ -19,6 +19,7 @@ export default function EventGallery({ full = false }: { full?: boolean }) {
           {['All moments', 'Celebrity gatherings', 'Awards & celebrations'].map((label) => (
             <button
               key={label}
+              type="button"
               aria-pressed={filter === label}
               onClick={() => {
                 setFilter(label);
@@ -34,6 +35,7 @@ export default function EventGallery({ full = false }: { full?: boolean }) {
         {photos.map((photo, i) => (
           <button
             key={photo.id}
+            type="button"
             className="lx-photo group"
             onClick={() => setSelected(i)}
             aria-label={'View ' + photo.title}
@@ -86,13 +88,13 @@ export default function EventGallery({ full = false }: { full?: boolean }) {
                 decoding="async"
               />
               <div className="lx-lightbox-nav">
-                <button onClick={() => move(-1)} aria-label="Previous photograph">
+                <button type="button" onClick={() => move(-1)} aria-label="Previous photograph">
                   <ArrowLeft />
                 </button>
                 <span>
                   {(selected ?? 0) + 1} / {photos.length}
                 </span>
-                <button onClick={() => move(1)} aria-label="Next photograph">
+                <button type="button" onClick={() => move(1)} aria-label="Next photograph">
                   <ArrowRight />
                 </button>
               </div>

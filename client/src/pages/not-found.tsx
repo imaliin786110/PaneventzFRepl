@@ -32,7 +32,10 @@ export default function NotFound() {
         </p>
 
         <Link href="/">
-          <button className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#E5C378] text-black font-cinzel font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-lg shadow-[#E5C378]/20 cursor-pointer">
+          <button 
+            type="button"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#E5C378] text-black font-cinzel font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-lg shadow-[#E5C378]/20 cursor-pointer"
+          >
             <ArrowLeft className="w-4 h-4" />
             Return to Homepage
           </button>

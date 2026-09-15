@@ -284,7 +284,7 @@ const ContactSection = () => {
                             <Input
                               {...field}
                               placeholder="e.g. Rahul Sharma"
-                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400 text-xs font-mono" />
@@ -305,7 +305,7 @@ const ContactSection = () => {
                               {...field}
                               type="tel"
                               placeholder="+91 98213 37523"
-                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400 text-xs font-mono" />
@@ -329,7 +329,7 @@ const ContactSection = () => {
                               {...field}
                               type="email"
                               placeholder="name@company.com"
-                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400 text-xs font-mono" />
@@ -380,7 +380,7 @@ const ContactSection = () => {
                             <Input
                               {...field}
                               placeholder="e.g. November 2026 / Flexible"
-                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400 text-xs font-mono" />
@@ -400,7 +400,7 @@ const ContactSection = () => {
                             <Input
                               {...field}
                               placeholder="e.g. Mumbai, Udaipur, Delhi, Goa"
-                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
+                              className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 h-12 text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400 text-xs font-mono" />
@@ -480,7 +480,7 @@ const ContactSection = () => {
                             {...field}
                             rows={4}
                             placeholder="Describe your event ambition, desired atmosphere, technical requirements (audio/video, 4K LED, stage, lighting, artist booking), or special VIP protocols..."
-                            className="bg-black/50 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 resize-none text-sm p-3.5"
+                            className="bg-black/50 border-white/10 text-white placeholder:text-zinc-500 rounded-xl focus:border-[#E5C378] focus:ring-[#E5C378]/20 resize-none text-sm p-3.5"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400 text-xs font-mono" />

@@ -661,6 +661,7 @@ const ServicePage = () => {
                 return (
                   <button
                     key={key}
+                    type="button"
                     onClick={() => setActiveTab(key)}
                     className={`px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-cinzel font-medium transition-all whitespace-nowrap shrink-0 cursor-pointer border flex items-center gap-2.5 duration-300 ${
                       isActive
@@ -942,6 +943,8 @@ const ServicePage = () => {
                   {selectedPhoto.title}
                 </h4>
                 <button
+                  type="button"
+                  aria-label="Close dialog"
                   onClick={() => setSelectedPhoto(null)}
                   className="p-1.5 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
                 >

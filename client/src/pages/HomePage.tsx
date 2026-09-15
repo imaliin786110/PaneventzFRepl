@@ -129,16 +129,28 @@ export default function HomePage() {
           <div className="lx-hero-bottom">
             <span>THE PAN EVENTZ ARCHIVE<br /><strong>{eventPhotos[slide].title}</strong></span>
             <div className="lx-slide-controls">
-              <button aria-label="Previous featured photograph" onClick={() => setSlide((current) => (current + eventPhotos.length - 1) % eventPhotos.length)}>
+              <button 
+                type="button"
+                aria-label="Previous featured photograph" 
+                onClick={() => setSlide((current) => (current + eventPhotos.length - 1) % eventPhotos.length)}
+              >
                 <ArrowLeft />
               </button>
               <span>{String(slide + 1).padStart(2, "0")} / {String(eventPhotos.length).padStart(2, "0")}</span>
               {!reducedMotion && (
-                <button aria-label={paused ? "Play slideshow" : "Pause slideshow"} onClick={() => setPaused((current) => !current)}>
+                <button 
+                  type="button"
+                  aria-label={paused ? "Play slideshow" : "Pause slideshow"} 
+                  onClick={() => setPaused((current) => !current)}
+                >
                   {paused ? <Play size={18} /> : <Pause size={18} />}
                 </button>
               )}
-              <button aria-label="Next featured photograph" onClick={() => setSlide((current) => (current + 1) % eventPhotos.length)}>
+              <button 
+                type="button"
+                aria-label="Next featured photograph" 
+                onClick={() => setSlide((current) => (current + 1) % eventPhotos.length)}
+              >
                 <ArrowRight />
               </button>
             </div>

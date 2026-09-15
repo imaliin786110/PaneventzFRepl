@@ -29,10 +29,10 @@ const FloatingWhatsApp = ({
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-auto">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto">
       {/* Expanded Interactive Concierge Card */}
       {isOpen && (
-        <div className="mb-3 w-[330px] sm:w-[380px] rounded-3xl bg-[#090D16]/98 backdrop-blur-2xl border border-[#25D366]/40 shadow-2xl p-5 text-white animate-in fade-in-50 slide-in-from-bottom-5 duration-300">
+        <div className="mb-3 w-[calc(100vw-2rem)] max-w-[360px] sm:w-[380px] rounded-3xl bg-[#090D16]/98 backdrop-blur-2xl border border-[#25D366]/40 shadow-2xl p-4 sm:p-5 text-white animate-in fade-in-50 slide-in-from-bottom-5 duration-300">
           
           {/* Header */}
           <div className="flex items-center justify-between pb-3.5 border-b border-white/10 mb-3.5">
@@ -136,8 +136,10 @@ const FloatingWhatsApp = ({
         <div className="absolute -inset-1.5 bg-gradient-to-r from-[#25D366] via-[#E8B923] to-[#25D366] rounded-full blur-sm opacity-75 group-hover:opacity-100 animate-pulse transition-opacity duration-500"></div>
 
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Chat on WhatsApp (+91 80820 24787)"
+          aria-expanded={isOpen}
           className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#090D16] border-2 border-[#25D366] text-[#25D366] hover:text-white hover:bg-[#25D366] flex items-center justify-center shadow-2xl transition-all duration-300 group-hover:scale-105 cursor-pointer"
         >
           {isOpen ? (
