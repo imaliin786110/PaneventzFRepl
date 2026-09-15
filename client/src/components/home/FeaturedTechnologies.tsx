@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { getSrcSet } from "@/lib/image-utils";
 
 interface EventDiscipline {
   id: number;
@@ -128,6 +129,11 @@ const FeaturedTechnologies = () => {
                 <div className="relative h-60 sm:h-72 overflow-hidden">
                   <img 
                     src={item.image} 
+                    srcSet={getSrcSet(item.image, [400, 700, 1000])}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={800}
+                    height={500}
+                    decoding="async"
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"

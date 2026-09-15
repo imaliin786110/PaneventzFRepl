@@ -147,6 +147,9 @@ const Testimonials = () => {
                         <img
                           src={authorImage}
                           alt={authorName}
+                          width={44}
+                          height={44}
+                          decoding="async"
                           className="w-11 h-11 rounded-full object-cover border border-[#E5C378]/40 shrink-0"
                           loading="lazy"
                         />

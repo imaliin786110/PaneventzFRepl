@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { 
@@ -572,6 +574,25 @@ const ServicePage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title={`${service.title} | Pan Eventz`}
+        description={service.introduction}
+        canonical={`/services/${activeTab}`}
+        ogType="website"
+        ogImage={service.banner}
+        schema={{
+          "@type": "Service",
+          "name": service.title,
+          "serviceType": service.tag,
+          "description": service.introduction,
+          "provider": {
+            "@type": "EventPlanner",
+            "name": "Pan Eventz",
+            "url": "https://paneventz.com"
+          },
+          "areaServed": "India, UAE, International"
+        }}
+      />
       <Header />
 
       <main className="pt-20">
@@ -831,8 +852,13 @@ const ServicePage = () => {
                     <div className="aspect-[4/3] relative overflow-hidden bg-black/50">
                       <img
                         src={photo.url}
+                        srcSet={getSrcSet(photo.url, [480, 800, 1200])}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        width={800}
+                        height={600}
                         alt={photo.title}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
 
@@ -926,6 +952,11 @@ const ServicePage = () => {
               <div className="max-h-[65vh] flex items-center justify-center overflow-hidden rounded-xl bg-black">
                 <img
                   src={selectedPhoto.url}
+                  srcSet={getSrcSet(selectedPhoto.url, [800, 1200, 1920])}
+                  sizes="90vw"
+                  width={1600}
+                  height={1000}
+                  decoding="async"
                   alt={selectedPhoto.title}
                   className="max-h-[65vh] w-auto max-w-full object-contain rounded-xl"
                 />

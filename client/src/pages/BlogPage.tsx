@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatDate } from "@/lib/utils";
@@ -169,6 +171,12 @@ const BlogPage = () => {
 
   return (
     <div className="bg-[#050505] text-white min-h-screen selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title="Journal & Insights | Pan Eventz Executive Editorial"
+        description="Executive insights, event production methodologies, wedding trend analyses, and stadium acoustic guides from Pan Eventz."
+        canonical="/blog"
+        ogType="website"
+      />
       <Header />
 
       <main className="pt-20 pb-24">
@@ -251,6 +259,12 @@ const BlogPage = () => {
                   <div className="lg:col-span-7 relative min-h-[360px] lg:min-h-[480px] overflow-hidden">
                     <img 
                       src={featuredPost.image} 
+                      srcSet={getSrcSet(featuredPost.image, [600, 1000, 1400])}
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      width={1200}
+                      height={800}
+                      loading="lazy"
+                      decoding="async"
                       alt={featuredPost.title}
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     />
@@ -368,6 +382,12 @@ const BlogPage = () => {
                       <div className="relative h-60 overflow-hidden">
                         <img 
                           src={post.image} 
+                          srcSet={getSrcSet(post.image, [400, 800, 1200])}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          width={800}
+                          height={533}
+                          loading="lazy"
+                          decoding="async"
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />

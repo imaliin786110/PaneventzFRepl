@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, Link } from "wouter";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDate } from "@/lib/utils";
@@ -118,6 +120,29 @@ const EventDetailPage = () => {
 
   return (
     <div className="bg-[#050505] text-white min-h-screen selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title={`${displayEvent.title} | Pan Eventz Case Study`}
+        description={displayEvent.description}
+        canonical={`/event/${displayEvent.slug}`}
+        ogType="article"
+        ogImage={displayEvent.bannerImage}
+        schema={{
+          "@type": "Event",
+          "name": displayEvent.title,
+          "description": displayEvent.description,
+          "startDate": displayEvent.date,
+          "location": {
+            "@type": "Place",
+            "name": displayEvent.location
+          },
+          "organizer": {
+            "@type": "EventPlanner",
+            "name": "Pan Eventz",
+            "url": "https://paneventz.com"
+          },
+          "image": displayEvent.bannerImage
+        }}
+      />
       <Header />
 
       <main className="pt-24 md:pt-32 pb-24">
@@ -136,6 +161,14 @@ const EventDetailPage = () => {
           <div className="relative rounded-3xl overflow-hidden border border-white/[0.08] shadow-2xl min-h-[480px] lg:min-h-[560px] flex flex-col justify-end p-8 sm:p-12 lg:p-16">
             <img 
               src={displayEvent.bannerImage} 
+              srcSet={getSrcSet(displayEvent.bannerImage || '', [768, 1200, 1920])}
+              sizes="100vw"
+              width={1920}
+              height={900}
+              loading="eager"
+              decoding="async"
+              // @ts-ignore
+              fetchpriority="high"
               alt={displayEvent.title}
               className="absolute inset-0 w-full h-full object-cover object-center brightness-60"
             />
@@ -229,6 +262,10 @@ const EventDetailPage = () => {
                             <img 
                               src={displayEvent.testimonial.author.avatar} 
                               alt={displayEvent.testimonial.author.name}
+                              width={48}
+                              height={48}
+                              loading="lazy"
+                              decoding="async"
                               className="w-12 h-12 rounded-full object-cover border-2 border-[#E5C378]"
                             />
                           )}
@@ -283,6 +320,12 @@ const EventDetailPage = () => {
                         >
                           <img 
                             src={photo.imageUrl} 
+                            srcSet={getSrcSet(photo.imageUrl, [400, 800])}
+                            sizes="(max-width: 640px) 100vw, 33vw"
+                            width={800}
+                            height={600}
+                            loading="lazy"
+                            decoding="async"
                             alt={photo.alt}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
@@ -409,6 +452,11 @@ const EventDetailPage = () => {
             <div className="relative max-w-5xl max-h-[90vh]">
               <img 
                 src={selectedPhoto} 
+                srcSet={getSrcSet(selectedPhoto, [800, 1200, 1920])}
+                sizes="90vw"
+                width={1600}
+                height={1000}
+                decoding="async"
                 alt="Expanded View"
                 className="max-h-[85vh] w-auto rounded-3xl object-contain border border-[#E5C378]/30 shadow-2xl"
               />

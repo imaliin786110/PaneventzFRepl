@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRoute, Link } from "wouter";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { 
@@ -188,6 +190,29 @@ Live events serve as the premier content studio. Our cinematic production teams 
 
   return (
     <div className="bg-[#050505] text-white min-h-screen selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title={`${post.title} | Pan Eventz Editorial`}
+        description={post.excerpt}
+        canonical={`/blog/${post.slug}`}
+        ogType="article"
+        ogImage={post.image}
+        schema={{
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.excerpt,
+          "image": post.image,
+          "author": {
+            "@type": "Person",
+            "name": post.author
+          },
+          "datePublished": post.publishDate,
+          "publisher": {
+            "@type": "Organization",
+            "name": "Pan Eventz",
+            "url": "https://paneventz.com"
+          }
+        }}
+      />
       <Header />
 
       <main className="pt-24 md:pt-32 pb-24">
@@ -225,6 +250,10 @@ Live events serve as the premier content studio. Our cinematic production teams 
                 <img 
                   src={post.authorImage} 
                   alt={post.author} 
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                   className="w-12 h-12 rounded-full object-cover border-2 border-[#E5C378]"
                 />
                 <div>
@@ -250,6 +279,14 @@ Live events serve as the premier content studio. Our cinematic production teams 
           <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/[0.08] shadow-2xl">
             <img 
               src={post.image} 
+              srcSet={getSrcSet(post.image, [640, 1024, 1600])}
+              sizes="(max-width: 1024px) 100vw, 1000px"
+              width={1200}
+              height={600}
+              loading="eager"
+              decoding="async"
+              // @ts-ignore
+              fetchpriority="high"
               alt={post.title} 
               className="w-full h-[400px] sm:h-[500px] object-cover"
             />
@@ -296,6 +333,10 @@ Live events serve as the premier content studio. Our cinematic production teams 
               <img 
                 src={post.authorImage} 
                 alt={post.author} 
+                width={80}
+                height={80}
+                loading="lazy"
+                decoding="async"
                 className="w-20 h-20 rounded-2xl object-cover border-2 border-[#E5C378] shadow-lg shadow-[#E5C378]/20"
               />
               <div>
@@ -327,6 +368,12 @@ Live events serve as the premier content studio. Our cinematic production teams 
                       <div className="relative h-44 rounded-2xl overflow-hidden mb-5">
                         <img 
                           src={rel.image} 
+                          srcSet={getSrcSet(rel.image, [400, 700])}
+                          sizes="(max-width: 640px) 100vw, 400px"
+                          width={600}
+                          height={400}
+                          loading="lazy"
+                          decoding="async"
                           alt={rel.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

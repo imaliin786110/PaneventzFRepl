@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { 
@@ -402,6 +404,12 @@ const MediaPage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title="Cinematic Event Portfolio & Media Archive | Pan Eventz"
+        description="Explore the Pan Eventz photographic archive of enterprise summits, royal destination weddings, live arena concerts, and celebrity galas executed across India."
+        canonical="/media"
+        ogType="website"
+      />
       <Header />
 
       <main className="pt-20">
@@ -637,6 +645,10 @@ const MediaPage = () => {
 
                           <img
                             src={image.secure_url}
+                            srcSet={getSrcSet(image.secure_url, [480, 800, 1200])}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            width={image.width || 800}
+                            height={image.height || 600}
                             alt={image.title || `Pan Eventz production capture`}
                             loading="lazy"
                             decoding="async"
@@ -773,6 +785,11 @@ const MediaPage = () => {
                   <img
                     key={selectedPhoto.secure_url}
                     src={selectedPhoto.secure_url}
+                    srcSet={getSrcSet(selectedPhoto.secure_url, [800, 1200, 1920])}
+                    sizes="90vw"
+                    width={selectedPhoto.width || 1600}
+                    height={selectedPhoto.height || 1000}
+                    decoding="async"
                     alt={selectedPhoto.title || "Pan Eventz Event Portfolio"}
                     className="max-h-[60vh] sm:max-h-[66vh] w-auto max-w-full object-contain rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-300 select-none"
                   />

@@ -43,6 +43,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
   app.use('/uploads', express.static(uploadsDir));
   
+  // Public SEO endpoints
+  app.get('/robots.txt', (_req, res) => {
+    const robotsPath = path.join(process.cwd(), 'client', 'public', 'robots.txt');
+    const distRobotsPath = path.join(process.cwd(), 'dist', 'public', 'robots.txt');
+    res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+    if (fs.existsSync(robotsPath)) {
+      res.sendFile(robotsPath);
+    } else if (fs.existsSync(distRobotsPath)) {
+      res.sendFile(distRobotsPath);
+    } else {
+      res.send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\nSitemap: https://paneventz.com/sitemap.xml`);
+    }
+  });
+
+  app.get('/sitemap.xml', (_req, res) => {
+    const sitemapPath = path.join(process.cwd(), 'client', 'public', 'sitemap.xml');
+    const distSitemapPath = path.join(process.cwd(), 'dist', 'public', 'sitemap.xml');
+    res.setHeader('Content-Type', 'application/xml; charset=UTF-8');
+    if (fs.existsSync(sitemapPath)) {
+      res.sendFile(sitemapPath);
+    } else if (fs.existsSync(distSitemapPath)) {
+      res.sendFile(distSitemapPath);
+    } else {
+      res.status(404).send('<!-- sitemap not found -->');
+    }
+  });
+
   // Public routes
   // Slides - Using Rich Content Data
   app.get(`${apiPrefix}/slides`, async (req, res) => {

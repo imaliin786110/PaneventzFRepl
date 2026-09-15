@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Award, Sparkles, Users, ShieldCheck, ArrowRight, Trophy } from "lucide-react";
+import { getSrcSet } from "@/lib/image-utils";
 
 interface AboutContent {
   description: string;
@@ -157,6 +158,11 @@ const AboutSection = () => {
                 <div className="relative group overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl h-56 sm:h-64">
                   <img
                     src={content?.images?.[0] || fallbackAbout.images[0]}
+                    srcSet={getSrcSet(content?.images?.[0] || fallbackAbout.images[0], [320, 480, 640])}
+                    sizes="(max-width: 640px) 50vw, 250px"
+                    width={500}
+                    height={350}
+                    decoding="async"
                     alt="Pan Eventz Production"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
@@ -170,6 +176,11 @@ const AboutSection = () => {
                 <div className="relative group overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl h-44 sm:h-52">
                   <img
                     src={content?.images?.[1] || fallbackAbout.images[1]}
+                    srcSet={getSrcSet(content?.images?.[1] || fallbackAbout.images[1], [320, 480, 640])}
+                    sizes="(max-width: 640px) 50vw, 250px"
+                    width={500}
+                    height={350}
+                    decoding="async"
                     alt="Corporate Gala"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
@@ -186,6 +197,11 @@ const AboutSection = () => {
                 <div className="relative group overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl h-44 sm:h-52">
                   <img
                     src={content?.images?.[2] || fallbackAbout.images[2]}
+                    srcSet={getSrcSet(content?.images?.[2] || fallbackAbout.images[2], [320, 480, 640])}
+                    sizes="(max-width: 640px) 50vw, 250px"
+                    width={500}
+                    height={350}
+                    decoding="async"
                     alt="Luxury Wedding"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
@@ -199,6 +215,11 @@ const AboutSection = () => {
                 <div className="relative group overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl h-56 sm:h-64">
                   <img
                     src={content?.images?.[3] || fallbackAbout.images[3]}
+                    srcSet={getSrcSet(content?.images?.[3] || fallbackAbout.images[3], [320, 480, 640])}
+                    sizes="(max-width: 640px) 50vw, 250px"
+                    width={500}
+                    height={350}
+                    decoding="async"
                     alt="Live Concert"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"

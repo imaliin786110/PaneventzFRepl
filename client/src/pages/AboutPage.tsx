@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Link } from "wouter";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
+import { getSrcSet } from "@/lib/image-utils";
 import { Button } from "@/components/ui/button";
 import Statistics from "@/components/home/Statistics";
 import { 
@@ -155,6 +157,12 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title="About Our Legacy & Leadership | Pan Eventz"
+        description="Founded in 2017 by Imran Mirza, Pan Eventz brings together 30+ years of pioneering event management, turnkey production, and world-class hospitality across India."
+        canonical="/about"
+        ogType="website"
+      />
       <Header />
 
       <main className="pt-20">
@@ -268,6 +276,12 @@ const AboutPage = () => {
                 <div className="relative rounded-3xl overflow-hidden border border-[#E5C378]/30 shadow-2xl group bg-[#0D0D0E]">
                   <img
                     src={content.team[0].image}
+                    srcSet={getSrcSet(content.team[0].image, [400, 600, 800])}
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    width={600}
+                    height={750}
+                    loading="lazy"
+                    decoding="async"
                     alt="Imran Mirza - Founder & Managing Director"
                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -415,6 +429,12 @@ const AboutPage = () => {
                   <div className="aspect-[4/5] relative overflow-hidden bg-neutral-900">
                     <img 
                       src={member.image} 
+                      srcSet={getSrcSet(member.image, [300, 500, 700])}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      width={400}
+                      height={500}
+                      loading="lazy"
+                      decoding="async"
                       alt={member.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                     />

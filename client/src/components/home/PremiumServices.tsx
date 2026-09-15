@@ -185,7 +185,10 @@ const PremiumServices = () => {
                   <img 
                     src={service.image} 
                     alt={service.title}
+                    width={600}
+                    height={400}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0E] via-[#0D0D0E]/40 to-transparent" />

@@ -1,16 +1,18 @@
-import { useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ContactSection from "@/components/home/ContactSection";
+import SEO from "@/components/seo/SEO";
 import { MapPin, Phone, Mail, Sparkles, MessageCircle, ShieldCheck, Clock, Award } from "lucide-react";
 
 const ContactPage = () => {
-  useEffect(() => {
-    document.title = "Plan Your Event & Executive Concierge | Pan Eventz";
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
+      <SEO
+        title="Plan Your Event & Executive Concierge | Pan Eventz"
+        description="Initiate an event enquiry with Pan Eventz. Direct consultation with founder Imran Mirza for corporate summits, royal weddings, live entertainment, and VIP gatherings."
+        canonical="/contact"
+        ogType="website"
+      />
       <Header />
 
       <main className="pt-20">

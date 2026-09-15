@@ -168,7 +168,10 @@ const ServiceCards = () => {
                   <img 
                     src={service.imageUrl} 
                     alt={service.title} 
+                    width={600}
+                    height={400}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />

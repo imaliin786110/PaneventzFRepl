@@ -1,0 +1,12 @@
+# Robots.txt for Pan Eventz (https://paneventz.com)
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+
+# Host
+Host: https://paneventz.com
+
+# Sitemaps
+Sitemap: https://paneventz.com/sitemap.xml

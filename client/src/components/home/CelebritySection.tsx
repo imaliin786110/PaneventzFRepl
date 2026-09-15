@@ -6,6 +6,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { getSrcSet } from "@/lib/image-utils";
 
 interface CelebrityImage {
   id: string;
@@ -25,61 +26,59 @@ const CelebritySection = () => {
       public_id: "11_imp_cover_page_umrvw4",
       secure_url: "https://res.cloudinary.com/dhxetyrkb/image/upload/v1749972657/11_imp_cover_page_umrvw4.jpg",
       title: "Celebrity Gala & Red Carpet",
-      subtitle: "CEO Imran Mirza with Bollywood & Industry Dignitaries",
+      subtitle: "Star-studded evenings with industry dignitaries and icons",
       tag: "Red Carpet Gala"
     },
     {
-      id: "2", 
+      id: "2",
       public_id: "DSC_0634_l5nc6v",
       secure_url: "https://res.cloudinary.com/dhxetyrkb/image/upload/v1749972673/DSC_0634_l5nc6v.jpg",
-      title: "Star-Studded Award Night",
-      subtitle: "National Entertainment & Media Excellence",
-      tag: "Award Ceremony"
+      title: "An Evening of Recognition",
+      subtitle: "Celebrating leadership, artistic excellence, and triumph",
+      tag: "Awards & Honors"
     },
     {
       id: "3",
-      public_id: "16_pi03mq", 
+      public_id: "16_pi03mq",
       secure_url: "https://res.cloudinary.com/dhxetyrkb/image/upload/v1749972656/16_pi03mq.jpg",
-      title: "High-Profile Event Management",
-      subtitle: "VVIP Dignitaries & Celebrity Hospitality",
-      tag: "VVIP Hospitality"
+      title: "Distinguished Company",
+      subtitle: "Moments shared with icons from cinema and entertainment",
+      tag: "VIP Gathering"
     },
     {
       id: "4",
       public_id: "DSC_0632_lvbvde",
       secure_url: "https://res.cloudinary.com/dhxetyrkb/image/upload/v1749972672/DSC_0632_lvbvde.jpg",
-      title: "Celebrity Stage Production",
-      subtitle: "Live Concert & Artist Coordination",
-      tag: "Live Production"
+      title: "In the Spotlight",
+      subtitle: "Behind the curtain of India's most celebrated galas",
+      tag: "Production Archive"
     }
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#050505] relative overflow-hidden border-t border-white/[0.06]">
-      {/* Subtle warm champagne radial illumination */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#E5C378]/5 rounded-full blur-[140px] pointer-events-none" />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+    <section className="py-24 bg-[#050505] relative overflow-hidden border-t border-b border-white/[0.08]">
+      {/* Background Ambience */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E5C378]/[0.03] blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/60 border border-[#E5C378]/40 mb-4 shadow-sm backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E5C378]/10 border border-[#E5C378]/30 text-[#E5C378] text-xs font-mono uppercase tracking-[0.2em] mb-4">
             <Award className="w-3.5 h-3.5 text-[#E5C378]" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F4E8C1] font-mono">
-              Elite Industry Credibility
-            </span>
+            <span>Celebrity Archives</span>
           </div>
-          
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-cinzel text-white tracking-tight mb-4">
-            Endorsed by <span className="gold-foil-text font-cinzel-dec">Celebrities</span> & Icons
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-cinzel font-bold text-white tracking-tight mb-4">
+            Moments With <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4E8C1] via-[#E5C378] to-[#C5981B]">Icons</span>
           </h2>
-          
-          <p className="text-base sm:text-lg text-slate-400 leading-relaxed font-light font-sans">
-            From India's top business titans to beloved cinema and sports celebrities, Pan Eventz has orchestrated landmark moments with flawless VVIP management and turnkey execution.
+
+          <p className="text-sm sm:text-base text-slate-300 font-light leading-relaxed max-w-2xl mx-auto font-sans">
+            A testament to three decades of orchestrating grand evenings with the most distinguished personalities from Bollywood, sports, and business.
           </p>
         </div>
 
-        {/* Celebrity Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* 4 Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {celebrityImages.map((image) => (
             <div 
               key={image.id}
@@ -90,8 +89,13 @@ const CelebritySection = () => {
               <div className="aspect-[4/5] relative overflow-hidden bg-black">
                 <img
                   src={image.secure_url}
+                  srcSet={getSrcSet(image.secure_url, [360, 640, 900])}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  width={600}
+                  height={750}
                   alt={image.title}
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 
@@ -150,6 +154,11 @@ const CelebritySection = () => {
               <div className="max-h-[80vh] flex items-center justify-center bg-black">
                 <img 
                   src={selectedImage.secure_url} 
+                  srcSet={getSrcSet(selectedImage.secure_url, [800, 1200, 1600])}
+                  sizes="90vw"
+                  width={1200}
+                  height={800}
+                  decoding="async"
                   alt={selectedImage.title}
                   className="max-h-[75vh] w-auto object-contain mx-auto"
                 />
