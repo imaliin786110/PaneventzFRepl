@@ -1,109 +1,29 @@
-import { useEffect, useState } from "react";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import HeroSlider from "@/components/home/HeroSlider";
-import PremiumServices from "@/components/home/PremiumServices";
-import FeaturedTechnologies from "@/components/home/FeaturedTechnologies";
-import Testimonials from "@/components/home/Testimonials";
-import AboutSection from "@/components/home/AboutSection";
-import Statistics from "@/components/home/Statistics";
-import ContactSection from "@/components/home/ContactSection";
-import CallToAction from "@/components/home/CallToAction";
-import CelebritySection from "@/components/home/CelebritySection";
-import { ArrowUp } from "lucide-react";
-
-const HomePage = () => {
-  const [showBackToTop, setShowBackToTop] = useState(false);
-
-  // Handle scroll event for back to top button
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
-    
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Scroll to top function
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  };
-
-  // Set page title
-  useEffect(() => {
-    document.title = "Pan Eventz | Premier Event Management & Production in India";
-  }, []);
-
-  const partners = [
-    "RELIANCE INDUSTRIES",
-    "TATA MOTORS",
-    "ADITYA BIRLA GROUP",
-    "HDFC BANK",
-    "DLF LUXURY",
-    "SUNBURN FESTIVAL",
-    "TAJ HOTELS & RESORTS",
-    "MAHINDRA ENTERPRISES"
-  ];
-
-  return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-[#E5C378] selection:text-black font-sans">
-      <Header />
-      
-      <main>
-        <HeroSlider />
-
-        {/* Ultra-Luxury Prestige Enterprise Trust Bar */}
-        <section className="py-7 bg-[#08080A] border-y border-white/[0.08] relative overflow-hidden">
-          <div className="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5 shrink-0">
-              <div className="w-2 h-2 rounded-full bg-[#E5C378] animate-ping" />
-              <span className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-[#F4E8C1] via-[#E5C378] to-[#C5981B]">
-                Trusted Sovereign & Enterprise Partners
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center md:justify-end gap-2.5 sm:gap-4">
-              {partners.slice(0, 5).map((partner, idx) => (
-                <div 
-                  key={idx}
-                  className="px-4 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.08] text-zinc-300 font-cinzel font-medium text-[11px] sm:text-xs tracking-wider hover:border-[#E5C378]/50 hover:text-[#E5C378] transition-all duration-300 shadow-sm"
-                >
-                  {partner}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <CelebritySection />
-        <PremiumServices />
-        <FeaturedTechnologies />
-        <AboutSection />
-        <Testimonials />
-        <Statistics />
-        <ContactSection />
-        <CallToAction />
-      </main>
-      
-      <Footer />
-      
-      {/* Back to Top Floating Button (Offset above WhatsApp widget) */}
-      <button 
-        id="back-to-top" 
-        onClick={scrollToTop}
-        className={`fixed bottom-24 right-6 bg-[#0D0D0E]/95 backdrop-blur-md border border-[#E5C378]/40 text-[#E5C378] hover:bg-[#E5C378] hover:text-black w-11 h-11 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 z-40 cursor-pointer ${
-          showBackToTop ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-90 pointer-events-none"
-        }`}
-        aria-label="Back to top"
-      >
-        <ArrowUp className="w-4 h-4 stroke-[2.5]" />
-      </button>
-    </div>
-  );
-};
-
-export default HomePage;
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import EventGallery from '@/components/home/EventGallery';
+import {eventPhotos,eventServices} from '@/lib/event-content';
+export default function HomePage(){
+ const [slide,setSlide]=useState(0);
+ const [paused,setPaused]=useState(false);
+ const [reducedMotion,setReducedMotion]=useState(false);
+ const [pageHidden,setPageHidden]=useState(false);
+ useEffect(()=>{
+   const preference=window.matchMedia('(prefers-reduced-motion: reduce)');
+   const syncMotion=()=>setReducedMotion(preference.matches);
+   const syncVisibility=()=>setPageHidden(document.hidden);
+   syncMotion(); syncVisibility();
+   preference.addEventListener('change',syncMotion);
+   document.addEventListener('visibilitychange',syncVisibility);
+   return ()=>{preference.removeEventListener('change',syncMotion);document.removeEventListener('visibilitychange',syncVisibility);};
+ },[]);
+ useEffect(()=>{
+   if(paused||reducedMotion||pageHidden)return;
+   const timer=window.setTimeout(()=>setSlide(current=>(current+1)%eventPhotos.length),5500);
+   return ()=>window.clearTimeout(timer);
+ },[slide,paused,reducedMotion,pageHidden]);
+ useEffect(()=>{document.title='Pan Eventz | Extraordinary Events & Celebrations'},[]);
+ return <div className="lx-site"><Header/><main><section className="lx-hero" aria-label="Featured event photographs" aria-roledescription="carousel">{eventPhotos.map((photo,index)=><img key={photo.id} className={`lx-hero-photo lx-carousel-photo ${index===slide?"is-active":""}`} src={photo.url} alt={photo.title} aria-hidden={index!==slide}/>) }<div className="lx-hero-shade"/><div className="lx-hero-content"><p className="lx-kicker">EVENT MANAGEMENT · LIVE PRODUCTION · INDIA</p><h1>Extraordinary events.<br/><em>Lasting impressions.</em></h1><p>Corporate milestones. Celebrations of a lifetime. Live experiences that bring people together. Welcome to the world of Pan Eventz.</p><div className="lx-actions"><Link className="lx-button" href="/media">Explore our moments <ArrowUpRight size={18}/></Link><Link className="lx-outline" href="/contact">Plan an event</Link></div></div><div className="lx-hero-bottom"><span>THE PAN EVENTZ ARCHIVE<br/><strong>{eventPhotos[slide].title}</strong></span><div className="lx-slide-controls"><button aria-label="Previous featured photograph" onClick={()=>setSlide(current=>(current+eventPhotos.length-1)%eventPhotos.length)}><ArrowLeft/></button><span>{String(slide+1).padStart(2,"0")} / {String(eventPhotos.length).padStart(2,"0")}</span>{!reducedMotion&&<button aria-label={paused?"Play slideshow":"Pause slideshow"} onClick={()=>setPaused(current=>!current)}>{paused?<Play size={18}/>:<Pause size={18}/>}</button>}<button aria-label="Next featured photograph" onClick={()=>setSlide(current=>(current+1)%eventPhotos.length)}><ArrowRight/></button></div></div></section><section className="lx-intro lx-wrap"><p className="lx-kicker">THE OCCASION IS YOURS. THE DETAILS ARE OURS.</p><h2>We don’t just plan events.<br/>We bring <em>your vision to life.</em></h2><p>Founded in 2017 by Imran Mirza, Pan Eventz brings together creative event planning and hands-on production, backed by over 30 years of his experience in entertainment and events. From the scale of the stage to the welcome at the door, every element has a part to play.</p><div className="lx-facts"><div><strong>30+</strong><span>Years of founder’s industry experience</span></div><div><strong>2017</strong><span>The beginning of Pan Eventz</span></div><div><strong>One team</strong><span>Planning, creativity & production</span></div></div></section><section className="lx-wrap lx-portfolio"><div className="lx-section-head"><div><p className="lx-kicker">01 / INSIDE OUR WORLD</p><h2>Real people.<br/><em>Remarkable moments.</em></h2></div><p>Step inside our archive of celebrity gatherings and celebrations. A closer look at the people and moments behind Pan Eventz.</p></div><EventGallery/><Link href="/media" className="lx-text-link">Enter the gallery <ArrowUpRight size={18}/></Link></section><section className="lx-services lx-wrap"><div className="lx-section-head"><div><p className="lx-kicker">02 / EVENTS WE CREATE</p><h2>Every occasion.<br/><em>A world of possibilities.</em></h2></div><p>A company milestone or a personal celebration. An intimate gathering or an audience on its feet. We create the setting for your story.</p></div><div className="lx-service-list">{eventServices.map((service,i)=><Link href={'/services/'+service.slug} key={service.slug} className="lx-service-row"><span className="lx-number">0{i+1}</span><div><h3>{service.title}</h3><p className="lx-service-subtitle">{service.subtitle}</p></div><div><p>{service.description}</p><small>{service.details}</small></div><ArrowUpRight/></Link>)}</div></section><section className="lx-feature"><img src={eventPhotos[3].url} alt={eventPhotos[3].title} loading="lazy"/><div><p className="lx-kicker">03 / BEHIND EVERY GREAT EVENT</p><h2>The magic is visible.<br/><em>The detail is everything.</em></h2><p>Beautiful events need more than a beautiful idea. Our team connects the creative vision with the practical work: venue coordination, stage setups, technical production and on-ground logistics.</p><p>One connected approach, from the first conversation to the final applause.</p><Link href="/about" className="lx-text-link">Meet Pan Eventz <ArrowUpRight size={18}/></Link></div></section><section className="lx-wrap lx-production"><p className="lx-kicker">04 / FROM CONCEPT TO CURTAIN CALL</p><h2>Everything your event needs.<br/><em>Working in harmony.</em></h2><div className="lx-capabilities">{[['Creative planning','Ideas, event concepts and a clear plan built around your occasion.'],['Stage & spatial design','Stage setups, décor and spaces that bring the concept into the room.'],['Sound, light & LED','Audio, lighting, LED walls and visual production for a complete experience.'],['Film & live coverage','Audio-video shooting, content creation and coverage of the moments that matter.'],['Artists & hospitality','Performance coordination and thoughtful care for your guests.'],['Logistics & coordination','Resource planning, transport and an experienced team on the ground.']].map(([title,copy],i)=><div key={title}><span>0{i+1}</span><h3>{title}</h3><p>{copy}</p></div>)}</div></section><section className="lx-founder lx-wrap"><div><p className="lx-kicker">05 / A PERSONAL COMMITMENT</p><h2>Experience at the helm.<br/><em>Passion in every detail.</em></h2><p>Imran Mirza’s journey in entertainment and events spans over three decades. That experience shapes Pan Eventz’s approach: listen carefully, plan thoroughly and bring people together through occasions that feel meaningful.</p><p className="lx-signature">Imran Mirza</p><span>FOUNDER · PAN EVENTZ</span><Link href="/about" className="lx-text-link">Discover our story <ArrowUpRight size={18}/></Link></div><img src={eventPhotos[2].url} alt="Imran Mirza with guests from the entertainment industry" loading="lazy"/></section><section className="lx-wrap lx-process"><p className="lx-kicker">06 / YOUR EVENT, FROM THE VERY BEGINNING</p><h2>A clear plan.<br/><em>A remarkable experience.</em></h2><div>{[['Tell us your vision','Share the occasion, your audience and what matters most to you.'],['Shape the experience','We bring ideas, a practical plan and production details together.'],['Bring it to life','Our team coordinates the people, spaces and moments on the day.']].map(([title,copy],i)=><article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section><section className="lx-cta"><p className="lx-kicker">YOUR NEXT EXTRAORDINARY OCCASION</p><h2>Let’s make it<br/><em>one to remember.</em></h2><p>Tell us what you have in mind. We’ll take it from there.</p><Link className="lx-button" href="/contact">Start a conversation <ArrowUpRight size={18}/></Link><a href="mailto:info@paneventz.com">info@paneventz.com</a></section></main><Footer/></div>
+}
