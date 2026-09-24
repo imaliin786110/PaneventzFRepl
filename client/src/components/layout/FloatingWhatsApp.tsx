@@ -134,6 +134,7 @@ const FloatingWhatsApp = ({
       <div className="relative group">
         {/* Pulsing luxury aura */}
         <div className="absolute -inset-1.5 bg-gradient-to-r from-[#25D366] via-[#E8B923] to-[#25D366] rounded-full blur-sm opacity-75 group-hover:opacity-100 animate-pulse transition-opacity duration-500"></div>
+        <span className="absolute -inset-2 rounded-full border border-[#25D366]/50 live-beacon pointer-events-none"></span>
 
         <button
           type="button"
