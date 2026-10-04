@@ -4,7 +4,7 @@ import { ArrowUpRight, ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import EventGallery from '@/components/home/EventGallery';
-import { eventPhotos, eventServices } from '@/lib/event-content';
+import { featuredEventPhotos, eventServices } from '@/lib/event-content';
 import SEO from '@/components/seo/SEO';
 import { getSrcSet } from '@/lib/image-utils';
 import MotionReveal from '@/components/common/MotionReveal';
@@ -36,10 +36,10 @@ export default function HomePage() {
     if (Math.abs(diff) > 45) {
       if (diff > 0) {
         // Swiped left -> next slide
-        setSlide((current) => (current + 1) % eventPhotos.length);
+        setSlide((current) => (current + 1) % featuredEventPhotos.length);
       } else {
         // Swiped right -> previous slide
-        setSlide((current) => (current + eventPhotos.length - 1) % eventPhotos.length);
+        setSlide((current) => (current + featuredEventPhotos.length - 1) % featuredEventPhotos.length);
       }
     }
     touchStartX.current = null;
@@ -76,7 +76,7 @@ export default function HomePage() {
       setSlideProgress(p);
       if (currentStep >= totalSteps) {
         window.clearInterval(timer);
-        setSlide((current) => (current + 1) % eventPhotos.length);
+        setSlide((current) => (current + 1) % featuredEventPhotos.length);
       }
     }, stepMs);
 
@@ -88,9 +88,9 @@ export default function HomePage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
       if (e.key === 'ArrowLeft') {
-        setSlide((current) => (current + eventPhotos.length - 1) % eventPhotos.length);
+        setSlide((current) => (current + featuredEventPhotos.length - 1) % featuredEventPhotos.length);
       } else if (e.key === 'ArrowRight') {
-        setSlide((current) => (current + 1) % eventPhotos.length);
+        setSlide((current) => (current + 1) % featuredEventPhotos.length);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -115,7 +115,7 @@ export default function HomePage() {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {eventPhotos.map((photo, index) => (
+          {featuredEventPhotos.map((photo, index) => (
             <img 
               key={photo.id} 
               className={`lx-hero-photo lx-carousel-photo ${index === slide ? "is-active" : ""}`} 
@@ -151,16 +151,16 @@ export default function HomePage() {
             </MotionReveal>
           </div>
           <div className="lx-hero-bottom">
-            <span>THE PAN EVENTZ ARCHIVE<br /><strong>{eventPhotos[slide].title}</strong></span>
+            <span>THE PAN EVENTZ ARCHIVE<br /><strong>{featuredEventPhotos[slide].title}</strong></span>
             <div className="lx-slide-controls">
               <button 
                 type="button"
                 aria-label="Previous featured photograph" 
-                onClick={() => setSlide((current) => (current + eventPhotos.length - 1) % eventPhotos.length)}
+                onClick={() => setSlide((current) => (current + featuredEventPhotos.length - 1) % featuredEventPhotos.length)}
               >
                 <ArrowLeft />
               </button>
-              <span>{String(slide + 1).padStart(2, "0")} / {String(eventPhotos.length).padStart(2, "0")}</span>
+              <span>{String(slide + 1).padStart(2, "0")} / {String(featuredEventPhotos.length).padStart(2, "0")}</span>
               {!reducedMotion && (
                 <button 
                   type="button"
@@ -173,7 +173,7 @@ export default function HomePage() {
               <button 
                 type="button"
                 aria-label="Next featured photograph" 
-                onClick={() => setSlide((current) => (current + 1) % eventPhotos.length)}
+                onClick={() => setSlide((current) => (current + 1) % featuredEventPhotos.length)}
               >
                 <ArrowRight />
               </button>
@@ -255,12 +255,12 @@ export default function HomePage() {
 
         <section className="lx-feature">
           <img 
-            src={eventPhotos[3].url} 
-            srcSet={getSrcSet(eventPhotos[3].url, [480, 800, 1200])}
+            src={featuredEventPhotos[3].url} 
+            srcSet={getSrcSet(featuredEventPhotos[3].url, [480, 800, 1200])}
             sizes="(max-width: 768px) 100vw, 50vw"
             width={1200}
             height={800}
-            alt={eventPhotos[3].title} 
+            alt={featuredEventPhotos[3].title} 
             loading="lazy"
             decoding="async"
           />
@@ -312,8 +312,8 @@ export default function HomePage() {
             </div>
           </MotionReveal>
           <img 
-            src={eventPhotos[2].url} 
-            srcSet={getSrcSet(eventPhotos[2].url, [480, 800, 1200])}
+            src={featuredEventPhotos[2].url} 
+            srcSet={getSrcSet(featuredEventPhotos[2].url, [480, 800, 1200])}
             sizes="(max-width: 768px) 100vw, 50vw"
             width={1200}
             height={800}

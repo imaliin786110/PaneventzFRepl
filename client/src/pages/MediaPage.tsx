@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SEO from "@/components/seo/SEO";
 import { getSrcSet } from "@/lib/image-utils";
+import { eventPhotos } from "@/lib/event-content";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { 
@@ -215,67 +216,50 @@ const MediaPage = () => {
     }
   };
 
-  // Load all folders and their images
+  // Load all Cloudinary archive images from the verified local inventory
   useEffect(() => {
     let isMounted = true;
-    const loadAllFolders = async () => {
-      setIsLoading(true);
+    const categoryMap: Record<string, CloudinaryPortfolioImage["category"]> = {
+      "Celebrity moments": "celebrity",
+      "Corporate productions": "corporate",
+      "Live production": "concerts",
+      "Community events": "institutional",
+      "Signature events": "corporate"
+    };
 
-      const folders: MediaFolder[] = folderNames.map((folderName) => {
-        const meta = AUTHENTIC_EVENT_METADATA[folderName] || {
-          category: "corporate",
-          title: folderName,
-          description: `Authentic Pan Eventz event production capture from the ${folderName} collection.`,
-          technicalScope: "Comprehensive Audio-Visual Staging & Event Production"
-        };
-        return {
-          name: folderName,
-          displayName: folderName,
-          category: meta.category,
-          images: [],
-          isLoading: true
-        };
-      });
-
-      if (isMounted) setMediaFolders(folders);
-
-      // Load images for each folder concurrently
-      const folderPromises = folderNames.map(async (folderName) => {
-        const images = await fetchCloudinaryImages(folderName);
-        const meta = AUTHENTIC_EVENT_METADATA[folderName];
-        
-        // Enrich images with authentic Pan Eventz project descriptions
-        const enrichedImages: CloudinaryPortfolioImage[] = images.map((img, i) => ({
-          ...img,
-          folder: folderName,
-          title: meta ? `${meta.title} #${i + 1}` : `${folderName} — Capture ${i + 1}`,
-          category: meta ? meta.category : "corporate",
-          description: meta?.description || `High-resolution completed event capture from Pan Eventz archives.`,
-          technicalScope: meta?.technicalScope || "Professional Sound, Lighting & Stage Architecture",
+    const folders = Array.from(new Set(eventPhotos.map((photo) => photo.category))).map((category) => {
+      const images: CloudinaryPortfolioImage[] = eventPhotos
+        .filter((photo) => photo.category === category)
+        .map((photo, index) => ({
+          public_id: photo.publicId,
+          url: photo.url,
+          secure_url: photo.url,
+          width: photo.width,
+          height: photo.height,
+          format: photo.url.split('.').pop() || 'jpg',
+          created_at: '',
+          folder: category,
+          title: photo.title,
+          category: categoryMap[photo.category] || 'corporate',
+          description: photo.description,
+          technicalScope: 'Professional sound, lighting, staging, hospitality and event production',
           isVerifiedPanEventz: true
         }));
 
-        return { folderName, images: enrichedImages };
-      });
+      return {
+        name: category,
+        displayName: category,
+        category: categoryMap[category] || 'corporate',
+        images,
+        isLoading: false
+      };
+    });
 
-      const results = await Promise.all(folderPromises);
+    if (isMounted) {
+      setMediaFolders(folders);
+      setIsLoading(false);
+    }
 
-      if (isMounted) {
-        setMediaFolders(
-          folders.map((folder) => {
-            const found = results.find((r) => r.folderName === folder.name);
-            return {
-              ...folder,
-              images: found ? found.images : [],
-              isLoading: false
-            };
-          })
-        );
-        setIsLoading(false);
-      }
-    };
-
-    loadAllFolders();
     return () => {
       isMounted = false;
     };
