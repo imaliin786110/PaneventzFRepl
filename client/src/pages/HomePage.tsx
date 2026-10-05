@@ -20,8 +20,7 @@ export default function HomePage() {
   // Touch swipe gesture refs for mobile
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
-  const heroMotionPhotos = featuredEventPhotos.slice(0, 6);
-  const heroFilmPhotos = [...featuredEventPhotos, ...featuredEventPhotos].slice(0, 14);
+  const heroMotionPhotos = featuredEventPhotos.slice(0, 4);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
@@ -153,19 +152,6 @@ export default function HomePage() {
                   height={560}
                 />
               </figure>
-            ))}
-          </div>
-          <div className="lx-hero-filmstrip" aria-hidden="true">
-            {heroFilmPhotos.map((photo, index) => (
-              <img
-                key={`hero-film-${photo.id}-${index}`}
-                src={photo.thumbnailUrl || photo.url}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width={180}
-                height={120}
-              />
             ))}
           </div>
           <div className="lx-hero-content">
@@ -455,4 +441,5 @@ export default function HomePage() {
     </div>
   );
 }
+
 
