@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'wouter';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Pause, Play, Camera, Sparkles, ShieldCheck } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import EventGallery from '@/components/home/EventGallery';
@@ -138,10 +138,10 @@ export default function HomePage() {
               <p className="lx-kicker">EVENT MANAGEMENT · LIVE PRODUCTION · INDIA</p>
             </MotionReveal>
             <MotionReveal delay={0.2} distance={22}>
-              <h1>Extraordinary events.<br /><em>Lasting impressions.</em></h1>
+              <h1>Event experiences<br /><em>crafted to be remembered.</em></h1>
             </MotionReveal>
             <MotionReveal delay={0.32} distance={18}>
-              <p>Corporate milestones. Celebrations of a lifetime. Live experiences that bring people together. Welcome to the world of Pan Eventz.</p>
+              <p>Premium event planning, live production and guest experiences for corporate milestones, celebrity gatherings, weddings, launches and cultural celebrations.</p>
             </MotionReveal>
             <MotionReveal delay={0.45} distance={16}>
               <div className="lx-actions">
@@ -205,6 +205,67 @@ export default function HomePage() {
               <div><strong>One team</strong><span>Planning, creativity & production</span></div>
             </div>
           </MotionReveal>
+        </section>
+
+        <section className="lx-wrap lx-showcase" aria-label="Selected Pan Eventz event moments">
+          <MotionReveal>
+            <div className="lx-section-head">
+              <div>
+                <p className="lx-kicker">REAL EVENTS / REAL ATMOSPHERE</p>
+                <h2>Your event should feel<br/><em>alive from every angle.</em></h2>
+              </div>
+              <p>We use the room, the light, the stage and the people in it to create an occasion that photographs beautifully and feels effortless to attend.</p>
+            </div>
+          </MotionReveal>
+          <div className="lx-showcase-grid">
+            <MotionReveal delay={0.08} distance={20}>
+              <figure className="lx-showcase-main">
+                <img
+                  src={featuredEventPhotos[4]?.url || featuredEventPhotos[0].url}
+                  srcSet={getSrcSet(featuredEventPhotos[4]?.url || featuredEventPhotos[0].url, [768, 1200, 1920])}
+                  sizes="(max-width: 900px) 100vw, 62vw"
+                  width={1600}
+                  height={1000}
+                  alt={featuredEventPhotos[4]?.title || featuredEventPhotos[0].title}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption>
+                  <span>Signature atmosphere</span>
+                  <strong>{featuredEventPhotos[4]?.title || featuredEventPhotos[0].title}</strong>
+                </figcaption>
+              </figure>
+            </MotionReveal>
+            <div className="lx-showcase-side">
+              {[featuredEventPhotos[5], featuredEventPhotos[6]].filter(Boolean).map((photo, index) => (
+                <MotionReveal key={photo.id} delay={0.16 + index * 0.08} distance={20}>
+                  <figure>
+                    <img
+                      src={photo.url}
+                      srcSet={getSrcSet(photo.url, [480, 800, 1200])}
+                      sizes="(max-width: 900px) 100vw, 31vw"
+                      width={1000}
+                      height={720}
+                      alt={photo.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <figcaption>
+                      <span>{photo.category}</span>
+                      <strong>{photo.title}</strong>
+                    </figcaption>
+                  </figure>
+                </MotionReveal>
+              ))}
+              <MotionReveal delay={0.34} distance={18}>
+                <div className="lx-showcase-proof">
+                  <div><Camera size={20}/><span>105 archive photographs</span></div>
+                  <div><Sparkles size={20}/><span>Planning, stage, sound, light and guest flow</span></div>
+                  <div><ShieldCheck size={20}/><span>Real Pan Eventz work from Cloudinary</span></div>
+                </div>
+              </MotionReveal>
+            </div>
+          </div>
         </section>
 
         <section className="lx-wrap lx-portfolio">
