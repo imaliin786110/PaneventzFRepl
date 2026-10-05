@@ -20,6 +20,8 @@ export default function HomePage() {
   // Touch swipe gesture refs for mobile
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const heroMotionPhotos = featuredEventPhotos.slice(0, 6);
+  const heroFilmPhotos = [...featuredEventPhotos, ...featuredEventPhotos].slice(0, 14);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
@@ -133,6 +135,39 @@ export default function HomePage() {
             />
           ))}
           <div className="lx-hero-shade" />
+          <div className="lx-hero-live-badge" aria-hidden="true">
+            <span /> Auto-moving real event showcase
+          </div>
+          <div className="lx-hero-3d-stage" aria-hidden="true">
+            {heroMotionPhotos.map((photo, index) => (
+              <figure
+                key={`hero-depth-${photo.id}`}
+                className={`lx-hero-3d-card lx-hero-3d-card-${index + 1} ${index === slide % heroMotionPhotos.length ? 'is-live' : ''}`}
+              >
+                <img
+                  src={photo.thumbnailUrl || photo.url}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width={420}
+                  height={560}
+                />
+              </figure>
+            ))}
+          </div>
+          <div className="lx-hero-filmstrip" aria-hidden="true">
+            {heroFilmPhotos.map((photo, index) => (
+              <img
+                key={`hero-film-${photo.id}-${index}`}
+                src={photo.thumbnailUrl || photo.url}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={180}
+                height={120}
+              />
+            ))}
+          </div>
           <div className="lx-hero-content">
             <MotionReveal delay={0.08} distance={16}>
               <p className="lx-kicker">EVENT MANAGEMENT · LIVE PRODUCTION · INDIA</p>
@@ -420,3 +455,4 @@ export default function HomePage() {
     </div>
   );
 }
+
