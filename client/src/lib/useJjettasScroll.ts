@@ -175,6 +175,69 @@ export function useJjettasScroll(containerRef: React.RefObject<HTMLElement | nul
           );
         }
 
+        // --- B2. SHOWCASE (REAL EVENTS / REAL ATMOSPHERE) LAYERED SCRUB ---
+        const showcaseSection = container.querySelector<HTMLElement>('.lx-showcase');
+        const showcaseMainImg = container.querySelector<HTMLElement>('.lx-showcase-main img');
+        const showcaseSideFigures = container.querySelectorAll<HTMLElement>('.lx-showcase-side figure');
+        const showcaseProofItems = container.querySelectorAll<HTMLElement>('.lx-showcase-proof > div');
+
+        if (showcaseSection && showcaseMainImg) {
+          gsap.fromTo(
+            showcaseMainImg,
+            { scale: 1.08, yPercent: -6 },
+            {
+              scale: 1.0,
+              yPercent: 6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: showcaseSection,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2,
+              },
+            }
+          );
+        }
+
+        if (showcaseSideFigures.length > 0) {
+          showcaseSideFigures.forEach((fig) => {
+            gsap.fromTo(
+              fig,
+              { y: 40, opacity: 0.3 },
+              {
+                y: 0,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: fig,
+                  start: 'top 90%',
+                  end: 'top 60%',
+                  scrub: 0.8,
+                },
+              }
+            );
+          });
+        }
+
+        if (showcaseProofItems.length > 0) {
+          gsap.fromTo(
+            showcaseProofItems,
+            { opacity: 0.2, x: -15 },
+            {
+              opacity: 1,
+              x: 0,
+              stagger: 0.1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: '.lx-showcase-proof',
+                start: 'top 85%',
+                end: 'top 65%',
+                scrub: 0.6,
+              },
+            }
+          );
+        }
+
         // --- C. SECTION 02: PORTFOLIO ARCHIVE MULTI-DEPTH PARALLAX GLIDE ---
         const portfolioSection = container.querySelector<HTMLElement>('.lx-portfolio');
         const mosaic = container.querySelector<HTMLElement>('.lx-mosaic');
