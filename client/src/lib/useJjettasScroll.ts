@@ -80,18 +80,23 @@ export function useJjettasScroll(containerRef: React.RefObject<HTMLElement | nul
       // 2. DESKTOP & LARGE SCREENS (>= 1024px): Full JJettas Editorial Experience
       // ============================================================
       mm.add('(min-width: 1024px)', () => {
-        // --- A. HERO SCROLL CINEMATIC DEPTH & PARALLAX ---
+        // --- A. HERO SCROLL CINEMATIC PINNED SEQUENCE (JJettas Signature) ---
         const hero = container.querySelector<HTMLElement>('.lx-hero');
         const heroPhotos = container.querySelectorAll<HTMLElement>('.lx-hero-photo');
         const heroContent = container.querySelector<HTMLElement>('.lx-hero-content');
+        const heroCards = container.querySelectorAll<HTMLElement>('.lx-hero-3d-card');
+        const heroBottom = container.querySelector<HTMLElement>('.lx-hero-bottom');
+        const heroBadge = container.querySelector<HTMLElement>('.lx-hero-live-badge');
 
         if (hero && heroContent) {
           const heroTl = gsap.timeline({
             scrollTrigger: {
               trigger: hero,
               start: 'top top',
-              end: 'bottom top',
+              end: '+=130%',
               scrub: 1.2,
+              pin: true,
+              anticipatePin: 1,
             },
           });
 
@@ -99,9 +104,10 @@ export function useJjettasScroll(containerRef: React.RefObject<HTMLElement | nul
           heroTl.to(
             heroContent,
             {
-              y: -120,
-              opacity: 0.1,
-              ease: 'power1.out',
+              y: -140,
+              opacity: 0,
+              scale: 0.94,
+              ease: 'power2.inOut',
             },
             0
           );
@@ -110,7 +116,7 @@ export function useJjettasScroll(containerRef: React.RefObject<HTMLElement | nul
             heroTl.to(
               heroBottom,
               {
-                y: 60,
+                y: 80,
                 opacity: 0,
                 ease: 'power1.out',
               },
@@ -118,14 +124,48 @@ export function useJjettasScroll(containerRef: React.RefObject<HTMLElement | nul
             );
           }
 
-          // Active background photo pulls back slightly in z-space and deepens
+          if (heroBadge) {
+            heroTl.to(
+              heroBadge,
+              {
+                opacity: 0,
+                y: -30,
+                ease: 'power1.out',
+              },
+              0
+            );
+          }
+
+          // Floating 3D Cards fan out and tilt in 3D space (JJettas Card Stage)
+          if (heroCards.length > 0) {
+            heroCards.forEach((card, i) => {
+              const rot = i % 2 === 0 ? -18 : 14;
+              const xOffset = i * -35;
+              const yOffset = i * 25 - 40;
+              heroTl.to(
+                card,
+                {
+                  x: xOffset,
+                  y: yOffset,
+                  rotationY: rot,
+                  rotationZ: rot * 0.2,
+                  scale: 1.08,
+                  opacity: i === 0 ? 1 : 0.85,
+                  ease: 'power1.inOut',
+                },
+                0
+              );
+            });
+          }
+
+          // Active background photo pulls back smoothly into framed z-space
           heroPhotos.forEach((img) => {
             heroTl.to(
               img,
               {
-                y: 90,
-                scale: 1.01,
-                filter: 'brightness(0.5)',
+                scale: 0.94,
+                filter: 'brightness(0.42)',
+                borderRadius: '24px',
                 ease: 'none',
               },
               0
