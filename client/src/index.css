@@ -375,3 +375,60 @@ body:has(.pe-header){--primary:38 40% 67%;--accent:38 40% 67%;--ring:38 40% 67%}
     animation: none !important;
   }
 }
+
+/* JJettas-Style Motion & Editorial Aesthetics */
+.jj-editorial-gpu {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.lx-hero {
+  perspective: 1000px;
+}
+
+.lx-facts > div {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lx-facts > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(205, 181, 139, 0.3), transparent);
+  transition: all 0.5s ease;
+}
+
+.lx-facts > div:hover::before {
+  left: 5%;
+  right: 5%;
+  background: linear-gradient(90deg, transparent, rgba(205, 181, 139, 0.8), transparent);
+}
+
+.lx-feature > img,
+.lx-founder > img {
+  will-change: transform;
+}
+
+.lx-process article {
+  position: relative;
+}
+
+.lx-process article::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--lx-accent);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lx-process article:hover::before {
+  width: 100%;
+}
+

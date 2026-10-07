@@ -9,8 +9,12 @@ import SEO from '@/components/seo/SEO';
 import { getSrcSet } from '@/lib/image-utils';
 import MotionReveal from '@/components/common/MotionReveal';
 import AnimatedCounter from '@/components/common/AnimatedCounter';
+import { useJjettasScroll } from '@/lib/useJjettasScroll';
 
 export default function HomePage() {
+  const siteContainerRef = useRef<HTMLDivElement>(null);
+  useJjettasScroll(siteContainerRef);
+
   const [slide, setSlide] = useState(0);
   const [slideProgress, setSlideProgress] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -98,7 +102,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="lx-site min-h-screen max-w-full relative">
+    <div ref={siteContainerRef} className="lx-site min-h-screen max-w-full relative">
       <SEO
         title="Pan Eventz | India's Premier Event Management & Production"
         description="Pan Eventz is India's leading event management and production agency specializing in corporate summits, royal weddings, live concerts, and brand launches with 30+ years of founder experience."
